@@ -63,9 +63,9 @@ A full-stack e-commerce web application built with:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/my-store.git
-cd my-store
-````
+git clone https://github.com/makauj/akoma_apparel.git
+cd akoma_apparel
+```
 
 ### 2. Setup the client
 
