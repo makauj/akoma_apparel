@@ -21,41 +21,41 @@ A full-stack e-commerce web application built with:
 ---
 
 ## 🧱 Project Structure
-
-/my-store
-├── client/                     # React + TypeScript + Tailwind frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/             # Static files (images, icons)
-│   │   ├── components/         # Reusable UI components (Navbar, ProductCard, etc.)
-│   │   ├── pages/              # Pages (Home, Product, Checkout, etc.)
-│   │   ├── hooks/              # Custom React hooks
-│   │   ├── types/              # TypeScript interfaces/types
-│   │   ├── utils/              # Helper functions
-│   │   ├── App.tsx
-│   │   └── main.tsx
-│   ├── index.html
-│   ├── tailwind.config.js
-│   ├── postcss.config.js
-│   ├── tsconfig.json
-│   └── package.json
-│
-├── server/                     # Express + TypeScript + MongoDB backend
-│   ├── src/
-│   │   ├── controllers/        # Request handlers (e.g., productController.ts)
-│   │   ├── models/             # Mongoose models (e.g., Product.ts, User.ts)
-│   │   ├── routes/             # Express route definitions
-│   │   ├── middleware/         # Custom middleware (auth, error handling)
-│   │   ├── utils/              # Utility functions (e.g., token generation)
-│   │   └── index.ts            # Entry point for server
-│   ├── .env                    # Environment variables
-│   ├── tsconfig.json
-│   ├── package.json
-│   └── nodemon.json (optional)
-│
-├── .gitignore
-└── README.md
-
+```
+my-store/
+    ├── client/                     # React + TypeScript + Tailwind frontend
+    │   ├── public/
+    │   ├── src/
+    │   │   ├── assets/             # Static files (images, icons)
+    │   │   ├── components/         # Reusable UI components (Navbar, ProductCard, etc.)
+    │   │   ├── pages/              # Pages (Home, Product, Checkout, etc.)
+    │   │   ├── hooks/              # Custom React hooks
+    │   │   ├── types/              # TypeScript interfaces/types
+    │   │   ├── utils/              # Helper functions
+    │   │   ├── App.tsx
+    │   │   └── main.tsx
+    │   ├── index.html
+    │   ├── tailwind.config.js
+    │   ├── postcss.config.js
+    │   ├── tsconfig.json
+    │   └── package.json
+    │
+    ├── server/                     # Express + TypeScript + MongoDB backend
+    │   ├── src/
+    │   │   ├── controllers/        # Request handlers (e.g., productController.ts)
+    │   │   ├── models/             # Mongoose models (e.g., Product.ts, User.ts)
+    │   │   ├── routes/             # Express route definitions
+    │   │   ├── middleware/         # Custom middleware (auth, error handling)
+    │   │   ├── utils/              # Utility functions (e.g., token generation)
+    │   │   └── index.ts            # Entry point for server
+    │   ├── .env                    # Environment variables
+    │   ├── tsconfig.json
+    │   ├── package.json
+    │   └── nodemon.json (optional)
+    │
+    ├── .gitignore
+    └── README.md
+```
 ---
 
 ## 🛠️ Getting Started
