@@ -22,7 +22,7 @@ A full-stack e-commerce web application built with:
 
 ## 🧱 Project Structure
 ```
-my-store/
+akoma_pparel/
     ├── client/                     # React + TypeScript + Tailwind frontend
     │   ├── public/
     │   ├── src/
