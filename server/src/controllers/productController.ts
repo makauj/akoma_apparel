@@ -14,10 +14,13 @@ export const getProducts = async (_req: Request, res: Response) => {
 
 // @desc    Get single product
 // @route   GET /api/products/:id
-export const getProductById = async (req: Request, res: Response) => {
+export const getProductById = async (req: Request, res: Response): Promise<void> => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+    if (!product) {
+      res.status(404).json({ message: 'Product not found' });
+      return;
+    }
     res.json(product);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -38,10 +41,13 @@ export const createProduct = async (req: Request, res: Response) => {
 
 // @desc    Delete product (Admin only)
 // @route   DELETE /api/products/:id
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const deleted = await Product.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: 'Product not found' });
+    if (!deleted) {
+      res.status(404).json({ message: 'Product not found' });
+      return;
+    }
     res.json({ message: 'Product deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
