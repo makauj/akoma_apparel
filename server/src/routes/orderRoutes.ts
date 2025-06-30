@@ -5,6 +5,6 @@ import { protect, adminOnly } from '../middleware/authMiddleware';
 const router = express.Router();
 
 router.post('/', protect, createOrder);
-router.get('/:id', protect, getUserOrders); // Change to /my for clarity
+router.get('/:id', protect, getUserOrders);
 
 export default router;
