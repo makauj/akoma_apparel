@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
 import validateEmail from '../utils/validateEmail';
-import { hashPassword, comparePasswords } from '../utils/generateToken';
+import { hashPassword, comparePasswords } from '../utils/hashPassword';
 import generateToken from '../utils/generateToken';
 
 
@@ -32,7 +32,7 @@ export const registerUser = async (req: Request, res: Response) => {
     _id: newUser._id,
     name: newUser.name,
     email: newUser.email,
-    token: generateToken(newUser._id),
+    token: generateToken(newUser.id),
   });
 };
 
