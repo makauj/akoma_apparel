@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
 import validateEmail from '../utils/validateEmail';
-import { hashPassword, comparePasswords } from '../utils/hashPassword';
+import { hashPassword, comparePasswords } from '../utils/generateToken';
 import generateToken from '../utils/generateToken';
 
 
