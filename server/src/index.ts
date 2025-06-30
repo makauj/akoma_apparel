@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import productRoutes from './src/routes/productRoutes';
-import userRoutes from './src/routes/userRoutes';
-import orderRoutes from './src/routes/orderRoutes';
-import { notFound, errorHandler } from './src/middleware/errorMiddleware';
+import productRoutes from './routes/productRoutes';
+import userRoutes from './routes/userRoutes';
+import orderRoutes from './routes/orderRoutes';
+import { notFound, errorHandler } from './middleware/errorMiddleware';
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
