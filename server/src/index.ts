@@ -8,9 +8,23 @@ import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 
+
 dotenv.config();
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/mydatabase';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/akoma_apparel';
+
+// Connect to MongoDB and start the server
+mongoose.connect(process.env.MONGO_URI as string)
+  .then(() => {
+    console.log('✅ Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Failed to connect to MongoDB:', err);
+    process.exit(1);
+  });
 
 const app = express();
 
@@ -34,16 +48,3 @@ app.get('/api', (_req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
-
-// Connect to MongoDB and start the server
-mongoose.connect(process.env.MONGO_URI as string)
-  .then(() => {
-    console.log('✅ Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB:', err);
-    process.exit(1);
-  });
