@@ -14,7 +14,7 @@ export const createOrder = async (req: Request, res: Response) => {
 };
 
 // @desc    Get user orders
-// @route   GET /api/orders/:userId
+// @route   GET /api/orders/user/:userId
 export const getUserOrders = async (req: Request, res: Response) => {
   try {
     const orders = await Order.find({ user: req.params.userId }).populate('items.product');
@@ -26,14 +26,15 @@ export const getUserOrders = async (req: Request, res: Response) => {
 
 // @desc    Get order by ID
 // @route   GET /api/orders/:id
-export const getOrderById = async (req: Request, res: Response) => {
+export const getOrderById = async (req: Request, res: Response): Promise<void> => {
   try {
     const order = await Order.findById(req.params.id).populate('items.product');
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      res.status(404).json({ message: 'Order not found' });
+      return;
     }
     res.json(order);
     } catch (err) {
-        return res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error' });
     }
 };
