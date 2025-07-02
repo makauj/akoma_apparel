@@ -27,12 +27,12 @@ export const registerUser = async (req: Request, res: Response) => {
     email,
     password: hashedPassword,
   });
-
+  await newUser.save()
   res.status(201).json({
     _id: newUser._id,
     name: newUser.name,
     email: newUser.email,
-    token: generateToken(newUser.id),
+    token: generateToken(String(newUser._id)),
   });
 };
 
