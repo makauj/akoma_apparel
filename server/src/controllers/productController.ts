@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Product from '../models/Product';
+import { uploadFile } from '../utils/uploadFile';
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -31,6 +32,20 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
 // @route   POST /api/products
 export const createProduct = async (req: Request, res: Response) => {
   try {
+    const { category } = req.body;
+
+    const file = req.file;
+    if (!file) {
+      res.status(400).json({ error: "Image/Video file is required" });
+      return;
+    }
+
+    // destination in s3 bucket
+    const s3key = `products/${category}/${Date.now()}-${file.originalname}}`;
+    // upload file (image or video) to s3
+    const fileUrl = await uploadFile(file, s3key)
+    req.body.imageUrl = fileUrl
+
     const newProduct = new Product(req.body);
     const savedProduct = await newProduct.save();
     res.status(201).json(savedProduct);
