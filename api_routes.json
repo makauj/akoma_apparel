@@ -1,0 +1,94 @@
+{
+  "apiDocumentation": {
+    "version": "1.0",
+    "basePath": "/api",
+    "routes": {
+      "userRoutes": {
+        "description": "User authentication and profile management endpoints",
+        "endpoints": [
+          {
+            "path": "/api/users/profile",
+            "method": "GET",
+            "description": "Get user profile information",
+            "authentication": "Required",
+            "middleware": ["protect"]
+          },
+          {
+            "path": "/api/users/register",
+            "method": "POST",
+            "description": "Register a new user",
+            "authentication": "Not Required"
+          },
+          {
+            "path": "/api/users/login",
+            "method": "POST",
+            "description": "User login",
+            "authentication": "Not Required"
+          }
+        ]
+      },
+      "productRoutes": {
+        "description": "Product management endpoints",
+        "endpoints": [
+          {
+            "path": "/api/products",
+            "method": "GET",
+            "description": "Get all products",
+            "authentication": "Not Required"
+          },
+          {
+            "path": "/api/products/:id",
+            "method": "GET",
+            "description": "Get product by ID",
+            "authentication": "Not Required"
+          },
+          {
+            "path": "/api/products",
+            "method": "POST",
+            "description": "Create a new product",
+            "authentication": "Required",
+            "middleware": ["protect", "adminOnly", "uploadMiddleware"]
+          },
+          {
+            "path": "/api/products/:id",
+            "method": "DELETE",
+            "description": "Delete a product",
+            "authentication": "Required",
+            "middleware": ["protect", "adminOnly"]
+          }
+        ]
+      },
+      "orderRoutes": {
+        "description": "Order management endpoints",
+        "endpoints": [
+          {
+            "path": "/api/orders",
+            "method": "POST",
+            "description": "Create a new order",
+            "authentication": "Required",
+            "middleware": ["protect"]
+          },
+          {
+            "path": "/api/orders/:id",
+            "method": "GET",
+            "description": "Get order by ID",
+            "authentication": "Required",
+            "middleware": ["protect"]
+          },
+          {
+            "path": "/api/orders/user/:userId",
+            "method": "GET",
+            "description": "Get all orders for a user",
+            "authentication": "Required",
+            "middleware": ["protect"]
+          }
+        ]
+      }
+    },
+    "authentication": {
+      "protect": "Requires user authentication",
+      "adminOnly": "Requires admin privileges",
+      "uploadMiddleware": "Handles file uploads"
+    }
+  }
+}
