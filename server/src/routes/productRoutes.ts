@@ -1,6 +1,6 @@
 import express from 'express';
-import { protect, adminOnly } from '../middleware/authMiddleware';
 
+import { protect, adminOnly } from '../middleware/authMiddleware';
 import {
   getProducts,
   getProductById,
