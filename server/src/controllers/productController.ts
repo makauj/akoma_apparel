@@ -34,23 +34,35 @@ export const createProduct = async (req: Request, res: Response) => {
   try {
     const { category } = req.body;
 
-    const file = req.file;
-    if (!file) {
-      res.status(400).json({ error: "Image/Video file is required" });
-      return;
+    // Check if file was uploaded
+    const file = (req as any).file;
+    if (file) {
+      // Generate S3 key for the file
+      const s3key = `products/${category}/${Date.now()}-${file.originalname}`;
+      
+      try {
+        // Upload file to S3
+        const fileUrl = await uploadFile(file, s3key);
+        req.body.imageUrl = fileUrl;
+        console.log(`File uploaded successfully: ${fileUrl}`);
+      } catch (uploadError) {
+        console.error('File upload failed:', uploadError);
+        return res.status(500).json({ 
+          error: "Failed to upload file", 
+          details: uploadError instanceof Error ? uploadError.message : 'Unknown upload error'
+        });
+      }
     }
-
-    // destination in s3 bucket
-    const s3key = `products/${category}/${Date.now()}-${file.originalname}}`;
-    // upload file (image or video) to s3
-    const fileUrl = await uploadFile(file, s3key)
-    req.body.imageUrl = fileUrl
 
     const newProduct = new Product(req.body);
     const savedProduct = await newProduct.save();
     res.status(201).json(savedProduct);
   } catch (err) {
-    res.status(400).json({ message: 'Invalid product data' });
+    console.error('Product creation error:', err);
+    res.status(400).json({ 
+      message: 'Invalid product data',
+      error: err instanceof Error ? err.message : 'Unknown error'
+    });
   }
 };
 

@@ -29,9 +29,11 @@ export const registerUser = async (req: Request, res: Response) => {
   });
   await newUser.save()
   res.status(201).json({
-    _id: newUser._id,
-    name: newUser.name,
-    email: newUser.email,
+    user: {
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+    },
     token: generateToken(String(newUser._id)),
   });
 };
@@ -59,9 +61,11 @@ export const loginUser = async (req: Request, res: Response) => {
 
   // 3. Return user data + token
   res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    },
     token: generateToken(user._id.toString()),
   });
 };
@@ -70,7 +74,7 @@ export const loginUser = async (req: Request, res: Response) => {
 // @desc    Get logged-in user's profile
 // @route   GET /api/users/profile
 // @access  Private
-export const getUserProfile = async (req: any, res: Response) => {
+export const getUserProfile = async (req: Request, res: Response) => {
   if (!req.user) return res.status(401).json({ message: 'Not authorized' });
 
   res.json({

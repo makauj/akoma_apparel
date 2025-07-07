@@ -1,0 +1,163 @@
+maset@maset:~/akoma_apparel/server/src$ npm test
+
+> akoma_apparel@1.0.0 test
+> jest
+
+ FAIL  src/tests/product.test.ts
+  ● Test suite failed to run
+
+    src/routes/userRoutes.ts:7:33 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: any, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'RequestHandlerParams<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+          Type '(req: any, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+            Type 'Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'void | Promise<void>'.
+              Type 'Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'Promise<void>'.
+                Type 'Response<any, Record<string, any>> | undefined' is not assignable to type 'void'.
+                  Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+
+    7 router.get('/profile', protect, getUserProfile);
+                                      ~~~~~~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:157:5
+        157     <
+                ~
+        158         P = ParamsDictionary,
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ... 
+        166         ...handlers: Array<RequestHandlerParams<P, ResBody, ReqBody, ReqQuery, LocalsObj>>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        167     ): T;
+            ~~~~~~~~~
+        The last overload is declared here.
+    src/routes/userRoutes.ts:8:26 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+          Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+    8 router.post('/register', registerUser);
+                               ~~~~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:168:5
+        168     (path: PathParams, subApplication: Application): T;
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The last overload is declared here.
+    src/routes/userRoutes.ts:9:23 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+          Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+    9 router.post('/login', loginUser);
+                            ~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:168:5
+        168     (path: PathParams, subApplication: Application): T;
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The last overload is declared here.
+
+ FAIL  src/tests/user.test.ts
+  ● Test suite failed to run
+
+    src/routes/userRoutes.ts:7:33 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: any, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'RequestHandlerParams<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+          Type '(req: any, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+            Type 'Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'void | Promise<void>'.
+              Type 'Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'Promise<void>'.
+                Type 'Response<any, Record<string, any>> | undefined' is not assignable to type 'void'.
+                  Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+
+    7 router.get('/profile', protect, getUserProfile);
+                                      ~~~~~~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:157:5
+        157     <
+                ~
+        158         P = ParamsDictionary,
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ... 
+        166         ...handlers: Array<RequestHandlerParams<P, ResBody, ReqBody, ReqQuery, LocalsObj>>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        167     ): T;
+            ~~~~~~~~~
+        The last overload is declared here.
+    src/routes/userRoutes.ts:8:26 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+          Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+    8 router.post('/register', registerUser);
+                               ~~~~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:168:5
+        168     (path: PathParams, subApplication: Application): T;
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The last overload is declared here.
+    src/routes/userRoutes.ts:9:23 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+          Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+    9 router.post('/login', loginUser);
+                            ~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:168:5
+        168     (path: PathParams, subApplication: Application): T;
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The last overload is declared here.
+
+ FAIL  src/tests/cart.test.ts
+  ● Test suite failed to run
+
+    src/routes/userRoutes.ts:7:33 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: any, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'RequestHandlerParams<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+          Type '(req: any, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+            Type 'Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'void | Promise<void>'.
+              Type 'Promise<Response<any, Record<string, any>> | undefined>' is not assignable to type 'Promise<void>'.
+                Type 'Response<any, Record<string, any>> | undefined' is not assignable to type 'void'.
+                  Type 'Response<any, Record<string, any>>' is not assignable to type 'void'.
+
+    7 router.get('/profile', protect, getUserProfile);
+                                      ~~~~~~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:157:5
+        157     <
+                ~
+        158         P = ParamsDictionary,
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ... 
+        166         ...handlers: Array<RequestHandlerParams<P, ResBody, ReqBody, ReqQuery, LocalsObj>>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        167     ): T;
+            ~~~~~~~~~
+        The last overload is declared here.
+    src/routes/userRoutes.ts:8:26 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+          Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+    8 router.post('/register', registerUser);
+                               ~~~~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:168:5
+        168     (path: PathParams, subApplication: Application): T;
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The last overload is declared here.
+    src/routes/userRoutes.ts:9:23 - error TS2769: No overload matches this call.
+      The last overload gave the following error.
+        Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+          Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+    9 router.post('/login', loginUser);
+                            ~~~~~~~~~
+
+      node_modules/@types/express-serve-static-core/index.d.ts:168:5
+        168     (path: PathParams, subApplication: Application): T;
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        The last overload is declared here.
+
+Test Suites: 3 failed, 3 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        13.527 s
+Ran all test suites.
