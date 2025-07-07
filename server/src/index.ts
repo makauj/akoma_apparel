@@ -7,6 +7,7 @@ import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
+import cartRoutes from './routes/cartRoutes';
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -32,6 +33,7 @@ app.get('/api', (_req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/cart', cartRoutes);
 
 // Error middlewares (should come after routes!)
 app.use(notFound);
