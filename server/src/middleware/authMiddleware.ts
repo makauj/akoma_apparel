@@ -1,13 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
-
-interface AuthRequest extends Request {
-  user?: any;
-}
+import { AuthenticatedRequest } from '../types/express';
 
 export const protect = async (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -23,7 +20,18 @@ export const protect = async (
         id: string;
       };
 
-      req.user = await User.findById(decoded.id).select('-password');
+      const user = await User.findById(decoded.id).select('-password');
+      if (!user) {
+        res.status(401).json({ message: 'Not authorized, user not found' });
+        return;
+      }
+
+      req.user = {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        isAdmin: user.isAdmin
+      };
       next(); // important
     } catch (err) {
       console.error('Token verification failed:', err);
@@ -35,7 +43,7 @@ export const protect = async (
 };
 
 export const adminOnly = (
-  req: AuthRequest,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): void => {
