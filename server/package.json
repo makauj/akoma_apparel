@@ -11,10 +11,17 @@
   },
 
   "jest": {
-  "preset": "ts-jest",
-  "testEnvironment": "node",
-  "setupFilesAfterEnv": ["<rootDir>/src/tests/setup.ts"],
-  "modulePathIgnorePatterns": ["<rootDir>/dist"]
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["<rootDir>/src/tests/setup.ts"],
+    "modulePathIgnorePatterns": ["<rootDir>/dist"],
+    "testTimeout": 10000,
+    "maxWorkers": 1
+  },
+
+  "compilerOptions": {
+  "strict": true,
+  "strictNullChecks": true
   },
 
   "keywords": [],
