@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Cart from '../models/Cart';
+import Cart from '../models/cart';
 
 export const getCart = async (req: Request, res: Response) => {
   const userId = req.user._id;
