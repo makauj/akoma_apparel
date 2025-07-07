@@ -32,6 +32,7 @@ app.get('/api', (_req, res) => {
 // Routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/auth', userRoutes); // Add auth alias for backward compatibility
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
 
@@ -39,18 +40,21 @@ app.use('/api/cart', cartRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// Connect to MongoDB and start server
-mongoose.connect(MONGO_URI)
-  .then(() => {
-    console.log('✅ Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+// Only start server if this file is run directly (not during tests)
+if (require.main === module) {
+  // Connect to MongoDB and start server
+  mongoose.connect(MONGO_URI)
+    .then(() => {
+      console.log('✅ Connected to MongoDB');
+      app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error('Failed to connect to MongoDB:', err);
+      process.exit(1);
     });
-  })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB:', err);
-    process.exit(1);
-  });
+}
 
 // Export app for testing purposes
 export default app;
