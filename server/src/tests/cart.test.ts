@@ -123,4 +123,18 @@ describe('🛒 Cart API', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.items.length).toBe(1);
   });
+
+  it('gets the cart item count', async () => {
+    await request(app)
+      .post('/api/cart/add')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ productId, quantity: 3 });
+
+    const res = await request(app)
+      .get('/api/cart/count')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.count).toBe(3);
+  });
 });
