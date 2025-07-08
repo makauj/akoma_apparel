@@ -43,7 +43,7 @@ export default function Header() {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-20">
             <X className="w-6 h-6 text-gray-700 cursor-pointer hover:text-gray-900 transition-colors" />
             <User className="w-6 h-6 text-gray-700 cursor-pointer hover:text-gray-900 transition-colors" />
             <Heart className="w-6 h-6 text-gray-700 cursor-pointer hover:text-gray-900 transition-colors" />
@@ -54,15 +54,20 @@ export default function Header() {
 
       {/* Search Bar */}
       <div className="w-full flex justify-center bg-gray-50 py-4 border-t border-gray-200">
-        <div className="w-full max-w-[1440px] px-6">
-          <div className="max-w-2xl mx-auto relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <div className="w-full max-w-[1440px] px-[100px] flex justify-center">
+          <div className="w-full max-w-[1040px] h-[56px] flex items-center border-b border-gray-300 px-4 relative">
+            {/* Search Icon */}
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6" />
+
+            {/* Input Field */}
             <input
               type="text"
               placeholder="Pants"
-              className="w-full pl-12 pr-4 py-3 bg-white border-0 border-b-2 border-gray-300 text-gray-700 placeholder-gray-400 text-base focus:outline-none focus:border-gray-500 transition-colors"
+              className="w-full h-full pl-12 pr-12 bg-white text-gray-700 placeholder-gray-400 text-base focus:outline-none"
             />
-            <X className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 cursor-pointer" />
+
+            {/* Clear Icon */}
+            <X className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 cursor-pointer" />
           </div>
         </div>
       </div>
