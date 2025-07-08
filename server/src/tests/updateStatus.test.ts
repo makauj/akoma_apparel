@@ -11,7 +11,7 @@ describe('Update Order Status (Admin)', () => {
   let userToken: string;
   let orderId: string;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     // Create admin user
     const admin = await User.create({
       name: 'Admin',
@@ -83,11 +83,5 @@ describe('Update Order Status (Admin)', () => {
       .send({ status: 'delivered' });
 
     expect(res.statusCode).toBe(404);
-  });
-
-  afterAll(async () => {
-    await Order.deleteMany({});
-    await User.deleteMany({});
-    await mongoose.connection.close();
   });
 });

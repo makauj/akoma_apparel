@@ -1,3 +1,7 @@
+import { Request, Response } from 'express';
+import User from '../models/User';
+import { hashPassword } from '../utils/hashPassword';
+
 export const resetPassword = async (req: Request, res: Response) => {
   const { email, code, newPassword } = req.body;
 
@@ -22,5 +26,5 @@ export const resetPassword = async (req: Request, res: Response) => {
 
   await user.save();
 
-  res.json({ message: 'Password has been reset successfully' });
+  res.status(200).json({ message: 'Password has been reset successfully' });
 };

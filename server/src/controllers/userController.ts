@@ -3,7 +3,6 @@ import User from '../models/User';
 import validateEmail from '../utils/validateEmail';
 import { hashPassword, comparePasswords } from '../utils/hashPassword';
 import generateToken from '../utils/generateToken';
-import generateResetCode from '../utils/generateResetCode';
 
 
 // @desc    Register user
@@ -62,11 +61,9 @@ export const loginUser = async (req: Request, res: Response) => {
 
   // 3. Return user data + token
   res.json({
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    },
+    _id: user._id,
+    name: user.name,
+    email: user.email,
     token: generateToken(user._id.toString()),
   });
 };
@@ -132,22 +129,7 @@ export const changeUserPassword = async (req: Request, res: Response) => {
 // @desc    Forgot password
 // @route   POST /api/users/forgot-password
 export const forgotPassword = async (req: Request, res: Response) => {
-  const { email } = req.body;
-
-  if (!email) return res.status(400).json({ message: 'Email is required' });
-
-  const user = await User.findOne({ email });
-  if (!user) return res.status(404).json({ message: 'User not found' });
-
-  const code = generateResetCode();
-  user.resetCode = code;
-  user.resetCodeExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
-  await user.save();
-
-  // TODO: Send via email – for now, log it
-  console.log(`Reset code for ${email}: ${code}`);
-
-  res.json({ message: 'Reset code sent to your email' });
+  res.send('Forgot password – not yet implemented');
 };
 
 // @desc    Reset password
@@ -161,4 +143,3 @@ export const resetPassword = async (req: Request, res: Response) => {
 export const verifyEmail = async (req: Request, res: Response) => {
   res.send('Verify email – not yet implemented');
 };
-

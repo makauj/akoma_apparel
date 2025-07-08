@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 describe('Password Reset', () => {
   let email = 'testuser@example.com';
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await User.create({
       name: 'Test User',
       email,
@@ -27,7 +27,16 @@ describe('Password Reset', () => {
   });
 
   it('resets the password using code', async () => {
+    // First, request a reset code
+    const resetRes = await request(app)
+      .post('/api/users/forgot-password')
+      .send({ email });
+
+    expect(resetRes.statusCode).toBe(200);
+
     const user = await User.findOne({ email });
+    expect(user).toBeTruthy();
+    expect(user?.resetCode).toBeDefined();
     const code = user!.resetCode;
 
     const res = await request(app)
@@ -40,10 +49,5 @@ describe('Password Reset', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toMatch(/password has been reset/i);
-  });
-
-  afterAll(async () => {
-    await User.deleteMany({});
-    await mongoose.connection.close();
   });
 });

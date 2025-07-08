@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 describe('Stripe Payment Checkout', () => {
   let token: string;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const user = await User.create({
       name: 'Payment Tester',
       email: 'stripe@test.com',
@@ -51,10 +51,5 @@ describe('Stripe Payment Checkout', () => {
       });
 
     expect(res.statusCode).toBe(401);
-  });
-
-  afterAll(async () => {
-    await User.deleteMany({});
-    await mongoose.connection.close();
   });
 });

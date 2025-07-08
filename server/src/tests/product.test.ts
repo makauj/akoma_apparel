@@ -61,7 +61,9 @@ describe('Product API', () => {
 
     const res = await request(app).get('/api/products');
     expect(res.status).toBe(200);
-    expect(res.body.length).toBe(1);
-    expect(res.body[0].name).toBe('Test Hoodie');
+    expect(res.body.products.length).toBe(1);
+    expect(res.body.products[0].name).toBe('Test Hoodie');
+    expect(res.body).toHaveProperty('page');
+    expect(res.body).toHaveProperty('pages');
   });
 });
