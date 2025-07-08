@@ -5,6 +5,7 @@ import {
   updateCartItem,
   removeFromCart,
   clearCart,
+  payCart,
 } from '../controllers/cartController';
 import { protect } from '../middleware/authMiddleware';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
@@ -29,5 +30,6 @@ router.post('/add', authHandler(addToCart));
 router.put('/update', authHandler(updateCartItem));
 router.delete('/remove/:productId', authHandler(removeFromCart));
 router.delete('/clear', authHandler(clearCart));
+router.post('/pay', authHandler(payCart));
 
 export default router;

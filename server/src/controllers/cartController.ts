@@ -1,14 +1,17 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Cart from '../models/cart';
+import  type { IProduct } from '../models/Product';
 import { AuthenticatedRequest } from '../types/express';
+import getCartByUserId from '../utils/getCartByUserId'
+import { makePayment, cartToOrder } from '../utils/checkout'
 
 export const getCart = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const userId = req.user._id;
 
-    const cart = await Cart.findOne({ user: userId }).populate('items.product');
-    res.status(200).json(cart || { user: userId, items: [] });
+    const cart = await getCartByUserId(req.user._id);
+    res.status(200).json(cart);
   } catch (error) {
     console.error('Error getting cart:', error);
     res.status(500).json({ 
@@ -137,3 +140,24 @@ export const clearCart = async (req: AuthenticatedRequest, res: Response) => {
     });
   }
 };
+
+export const payCart = async (req: AuthenticatedRequest, res: Response) => {
+  const cart = await getCartByUserId(req.user._id)
+  let totalAmount = 0
+  for (let item of cart.items) {
+    const product = item.product as unknown as IProduct;
+    totalAmount += product.price * item.quantity
+  }
+  const { shippingAddress } = req.body
+  if (!shippingAddress) res.status(400).json({message: "Please provide the shipping address"})
+  try {
+    const paymentUrl = await makePayment(req.user.email!, totalAmount)
+    const order = cartToOrder(cart, totalAmount, shippingAddress)
+    res.redirect(paymentUrl)
+  } catch(error) {
+    return res.status(500).json({ 
+      message: 'Check your network connection', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
+  }
+}
