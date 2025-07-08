@@ -1,8 +1,13 @@
 import Stripe from 'stripe';
 import { Request, Response } from 'express';
 
-// Initialize Stripe with a test key for testing environment
-const stripeKey = process.env.STRIPE_SECRET_KEY || '<STRIPE_SECRET_KEY_REMOVED>';
+// Initialize Stripe with environment variable
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+
+if (!stripeKey) {
+  throw new Error('STRIPE_SECRET_KEY environment variable is required');
+}
+
 const stripe = new Stripe(stripeKey);
 
 export const createCheckoutSession = async (req: Request, res: Response) => {
