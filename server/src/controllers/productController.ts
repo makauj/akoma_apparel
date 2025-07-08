@@ -3,13 +3,25 @@ import Product from '../models/Product';
 
 // @desc    Get all products
 // @route   GET /api/products
-export const getProducts = async (_req: Request, res: Response) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
+export const getProducts = async (req: Request, res: Response) => {
+  const pageSize = 10;
+  const page = Number(req.query.page) || 1;
+  const keyword = req.query.keyword
+    ? {
+        name: { $regex: req.query.keyword, $options: 'i' },
+      }
+    : {};
+
+  const count = await Product.countDocuments({ ...keyword });
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  res.json({
+    products,
+    page,
+    pages: Math.ceil(count / pageSize),
+  });
 };
 
 // @desc    Get single product
