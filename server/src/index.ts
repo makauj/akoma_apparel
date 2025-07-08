@@ -8,6 +8,7 @@ import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 import cartRoutes from './routes/cartRoutes';
+import paymentRoutes from './routes/paymentRoutes';
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -36,6 +37,8 @@ app.use('/api/auth', userRoutes); // Add auth alias for backward compatibility
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
 
+// Payment routes
+app.use('/api/payments', paymentRoutes);
 // Error middlewares (should come after routes!)
 app.use(notFound);
 app.use(errorHandler);
