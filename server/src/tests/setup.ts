@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import dotenv from 'dotenv';
+import path from 'path';
 
-// Set test environment variables
-process.env.JWT_SECRET = 'test-jwt-secret-key-for-testing-only';
+// Load test environment variables from .env.test file
+dotenv.config({ path: path.resolve(__dirname, '../../.env.test') });
+
+// Ensure test environment
 process.env.NODE_ENV = 'test';
-process.env.STRIPE_SECRET_KEY = 'sk_test_fake_key_for_testing';
-process.env.FRONTEND_URL = 'http://localhost:3000';
 
 let mongo: MongoMemoryServer;
 
