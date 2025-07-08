@@ -1,8 +1,16 @@
+import Header from './components/Header';
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <h1 className="text-3xl font-bold text-blue-600">Welcome to My Store</h1>
+    <div className="min-h-screen bg-white text-gray-800">
+      <Header />
+      {/* You can add more page content here later */}
+      <main className="p-8">
+        <h1 className="text-2xl font-semibold">Welcome to Modimal</h1>
+      </main>
     </div>
   );
 }
+
 export default App;
+
