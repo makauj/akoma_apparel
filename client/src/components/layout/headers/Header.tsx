@@ -44,16 +44,16 @@ export default function Header() {
 
         {/* Navigation Menu */}
         <nav className="flex gap-6 items-center">
-          {navItems.map((item, idx) => (
-            <a
-              key={idx}
-              href="#"
-              className="text-[#404040] text-sm tracking-wide hover:text-black"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
+            {navItems.map((item, idx) => (
+                <span
+                key={idx}
+                className="text-[#404040] text-sm tracking-wide hover:text-black
+                w-[104px] h-[32px] flex items-center justify-center"
+                >
+                    {item}
+                    </span>
+                ))}
+                </nav>
 
         {/* Icons */}
         <div className="flex items-center justify-center gap-6 h-8">
