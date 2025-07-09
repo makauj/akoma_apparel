@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+export type OrderSatus = 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
+
 const orderSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -17,8 +19,23 @@ const orderSchema = new mongoose.Schema(
     },
     shippingAddress: String,
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
+
+export interface OrderDocument extends mongoose.Document {
+  user: mongoose.Schema.Types.ObjectId;
+  items: {
+    product: mongoose.Schema.Types.ObjectId;
+    quantity: number;
+  }[];
+  totalAmount: number;
+  status: OrderSatus;
+  shippingAddress: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const Order = mongoose.model('Order', orderSchema);
 
