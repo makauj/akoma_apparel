@@ -50,9 +50,9 @@ export const getProducts = async (req: Request, res: Response) => {
     res.json({
       products: convertedProducts,
       page,
-      pages: Math.ceil(count / pageSize),
+      pages, // always at least 1
       total: count,
-      hasMore: page < pages,
+      hasMore: count > 0 && (page === 1),
       totalProducts: count,
     });
   } catch (err) {
