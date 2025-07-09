@@ -1,7 +1,27 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"], // CRITICAL: Ensure DOM and DOM.Iterable are here
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler", // This is important for Vite
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx", // CRITICAL: This enables React JSX compilation
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./", // Good practice for module resolution
+    "paths": { // Sometimes needed for specific module resolution, but usually not for direct imports
+      // "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"], // CRITICAL: Ensure 'src' is included so TypeScript scans your source files
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
