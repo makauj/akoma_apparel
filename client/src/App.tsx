@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/layout/headers/SearchHeader';
+import Header from './components/shared/DesktopHeader';
 import SearchPage01 from './pages/search/SearchPage01';
 
 
@@ -19,6 +19,7 @@ function App() {
         <footer />
       </div>
     </Router>
+    
   );
 }
 
