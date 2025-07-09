@@ -9,21 +9,22 @@
     "start": "node dist/index.js",
     "test": "jest"
   },
-
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "setupFilesAfterEnv": ["<rootDir>/src/tests/setup.ts"],
-    "modulePathIgnorePatterns": ["<rootDir>/dist"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/tests/setup.ts"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist"
+    ],
     "testTimeout": 10000,
     "maxWorkers": 1
   },
-
   "compilerOptions": {
-  "strict": true,
-  "strictNullChecks": true
+    "strict": true,
+    "strictNullChecks": true
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -33,7 +34,6 @@
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/mime-types": "^3.0.1",
     "@types/node": "^24.0.7",
     "@types/supertest": "^6.0.3",
     "jest": "^30.0.4",
@@ -43,18 +43,16 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
   },
-
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.842.0",
-    "@types/multer": "^2.0.0",
+    "@types/nodemailer": "^6.4.17",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mime-types": "^3.0.1",
     "mongoose": "^8.16.1",
-    "multer": "^2.0.1"
+    "nodemailer": "^7.0.5",
+    "stripe": "^18.3.0"
   }
 }

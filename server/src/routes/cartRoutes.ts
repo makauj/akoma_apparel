@@ -5,11 +5,12 @@ import {
   updateCartItem,
   removeFromCart,
   clearCart,
-  payCart,
+  getCartCount,
 } from '../controllers/cartController';
 import { protect } from '../middleware/authMiddleware';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { AuthenticatedRequest } from '../types/express';
+import { get } from 'http';
 
 const router = express.Router();
 
@@ -30,6 +31,7 @@ router.post('/add', authHandler(addToCart));
 router.put('/update', authHandler(updateCartItem));
 router.delete('/remove/:productId', authHandler(removeFromCart));
 router.delete('/clear', authHandler(clearCart));
-router.post('/pay', authHandler(payCart));
+router.get('/count', authHandler(getCartCount));
 
+// Export the router
 export default router;
