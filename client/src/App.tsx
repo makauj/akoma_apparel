@@ -1,5 +1,4 @@
 // src/App.tsx
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import './index.css';
@@ -13,7 +12,7 @@ import Footer from './components/layout/Footer.tsx'; // Add .tsx
 import ProductListPage from './pages/ProductListPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
-import CheckoutPage from './pages/CheckoutPage';
+import CheckoutPage from './pages/Checkout';
 
 function App() {
   return (

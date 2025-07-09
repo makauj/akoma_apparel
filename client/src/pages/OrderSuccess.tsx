@@ -1,4 +1,3 @@
-// src/pages/OrderSuccess.tsx
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useEffect } from 'react';
@@ -9,7 +8,7 @@ export default function OrderSuccess() {
   // Clear cart on load
   useEffect(() => {
     clearCart();
-  }, []);
+  }, [clearCart]);
 
   return (
     <div className="max-w-2xl mx-auto p-6 text-center">

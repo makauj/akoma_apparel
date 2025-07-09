@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useContext, type ReactNode } from 'react';
 
 export interface CartItem {
   productId: string;
@@ -44,14 +45,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useCartContext = () => {
-  const context = useContext(CartContext);
-  if (!context) throw new Error('useCartContext must be used within CartProvider');
-  return context;
-}
-
 export const useCart = () => {
   const context = useContext(CartContext);
-  if (!context) throw new Error('useCart must be used within CartProvider');
+  if (context === undefined) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
   return context;
 };

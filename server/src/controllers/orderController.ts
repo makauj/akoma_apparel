@@ -5,12 +5,25 @@ import { AuthenticatedRequest } from '../types/express';
 // @desc    Create new order
 // @route   POST /api/orders
 export const createOrder = async (req: Request, res: Response) => {
+  const { name, email, address, paymentIntentId } = req.body;
+
+  if (!name || !email || !address || !paymentIntentId) {
+    return res.status(400).json({ message: 'Missing required order fields' });
+  }
+
   try {
-    const order = new Order(req.body);
-    const saved = await order.save();
-    res.status(201).json(saved);
+    const order = await Order.create({
+      user: req.user?._id,
+      name,
+      email,
+      shippingAddress: address,
+      paymentIntentId,
+      status: 'paid',
+    });
+
+    res.status(201).json(order);
   } catch (err) {
-    res.status(400).json({ message: 'Invalid order data' });
+    res.status(500).json({ message: 'Failed to create order' });
   }
 };
 

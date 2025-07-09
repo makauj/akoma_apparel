@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import dotenv from 'dotenv';
 
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
@@ -9,8 +11,6 @@ import orderRoutes from './routes/orderRoutes';
 import paymentRoutes from './routes/paymentRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 import cartRoutes from './routes/cartRoutes';
-
-dotenv.config();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/akoma_apparel';
 
