@@ -1,24 +1,24 @@
-import Header from "./components/Header"; // adjust path as needed
-import Footer from "./components/Footer"; // adjust path as needed
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/layout/headers/SearchHeader';
+import SearchPage01 from './pages/search/SearchPage01';
+
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
 
-      {/* Page Content Goes Here */}
-      <main className="flex-grow">
-        {/* Example placeholder: */}
-        <div className="max-w-[1440px] mx-auto px-6 py-10">
-          <h1 className="text-2xl font-semibold text-[#404040]">Welcome to Modimal</h1>
-          <p className="mt-4 text-gray-700">
-            This is where your homepage or routes will render.
-          </p>
-        </div>
-      </main>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/search/01" element={<SearchPage01 />} />
+            <Route path="/" element={<div className="text-center p-10">Home Page Placeholder</div>} />
+          </Routes>
+        </main>
 
-      <Footer />
-    </div>
+        <footer />
+      </div>
+    </Router>
   );
 }
 
