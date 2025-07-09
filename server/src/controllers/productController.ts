@@ -1,27 +1,64 @@
 import { Request, Response } from 'express';
 import Product from '../models/Product';
+import { convertCurrency } from '../utils/convertCurrency';
 
 // @desc    Get all products
 // @route   GET /api/products
 export const getProducts = async (req: Request, res: Response) => {
-  const pageSize = 10;
-  const page = Number(req.query.page) || 1;
-  const keyword = req.query.keyword
-    ? {
-        name: { $regex: req.query.keyword, $options: 'i' },
-      }
-    : {};
+  try {
+    const pageSize = 10;
+    const page = Number(req.query.page) || 1;
+    // Build filter based on query parameters
+    const keyword = req.query.keyword
+      ? { name: { $regex: req.query.keyword, $options: 'i' } }
+      : {};
 
-  const count = await Product.countDocuments({ ...keyword });
-  const products = await Product.find({ ...keyword })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+    const category = req.query.category ? { category: req.query.category } : {};
+    const inStock =
+      req.query.inStock === 'true'
+        ? { inStock: true }
+        : req.query.inStock === 'false'
+        ? { inStock: false }
+        : {};
 
-  res.json({
-    products,
-    page,
-    pages: Math.ceil(count / pageSize),
-  });
+    let sort: Record<string, 1 | -1> = { createdAt: -1 };
+    if (req.query.sort === 'price_asc') sort = { price: 1 };
+    else if (req.query.sort === 'price_desc') sort = { price: -1 };
+    else if (req.query.sort === 'name_asc') sort = { name: 1 };
+    else if (req.query.sort === 'name_desc') sort = { name: -1 };
+
+    const currency = (req.query.currency as string)?.toUpperCase() || 'KES';
+
+    const filter = { ...keyword, ...category, ...inStock };
+    const count = await Product.countDocuments(filter);
+    const pages = Math.max(Math.ceil(count / pageSize), 1);
+
+    const products = await Product.find(filter)
+      .sort(sort)
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+
+    const convertedProducts = products.map((product) => {
+      const obj = product.toObject();
+      return {
+        ...obj,
+        price: convertCurrency(obj.price, currency as any),
+        currency,
+      };
+    });
+
+    res.json({
+      products: convertedProducts,
+      page,
+      pages: Math.ceil(count / pageSize),
+      total: count,
+      hasMore: page < pages,
+      totalProducts: count,
+    });
+  } catch (err) {
+    console.error('Error in getProducts:', err);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
 
 // @desc    Get single product
@@ -61,6 +98,123 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
       return;
     }
     res.json({ message: 'Product deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Update product (Admin only)
+// @route   PUT /api/products/:id
+export const updateProduct = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedProduct) {
+      res.status(404).json({ message: 'Product not found' });
+      return;
+    }
+    res.json(updatedProduct);
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid product data' });
+  }
+};
+
+// @desc    Get top rated products
+// @route   GET /api/products/top
+export const getTopProducts = async (req: Request, res: Response): Promise<void>  => {
+  try {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(5);
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get products by category
+// @route   GET /api/products/category/:category
+export const getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const category = req.params.category;
+    const products = await Product.find({ category })
+      .sort({ createdAt: -1 })
+      .limit(10);
+    if (products.length === 0) {
+      res.status(404).json({ message: 'No products found in this category' });
+      return;
+    }
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Search products by keyword
+// @route   GET /api/products/search
+export const searchProducts = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const keyword = req.query.keyword as string;
+    if (!keyword) {
+      res.status(400).json({ message: 'Keyword is required' });
+      return;
+    }
+
+    const products = await Product.find({
+      name: { $regex: keyword, $options: 'i' },
+    }).sort({ createdAt: -1 });
+
+    if (products.length === 0) {
+      res.status(404).json({ message: 'No products found' });
+      return;
+    }
+
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get products by price range
+// @route   GET /api/products/price
+export const getProductsByPrice = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const minPrice = Number(req.query.minPrice) || 0;
+    const maxPrice = Number(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
+
+    const products = await Product.find({
+      price: { $gte: minPrice, $lte: maxPrice },
+    }).sort({ price: 1 });
+
+    if (products.length === 0) {
+      res.status(404).json({ message: 'No products found in this price range' });
+      return;
+    }
+
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get products by rating
+// @route   GET /api/products/rating
+export const getProductsByRating = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const minRating = Number(req.query.minRating) || 0;
+    const maxRating = Number(req.query.maxRating) || 5;
+
+    const products = await Product.find({
+      rating: { $gte: minRating, $lte: maxRating },
+    }).sort({ rating: -1 });
+
+    if (products.length === 0) {
+      res.status(404).json({ message: 'No products found in this rating range' });
+      return;
+    }
+
+    res.json(products);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
