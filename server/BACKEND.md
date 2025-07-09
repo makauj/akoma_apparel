@@ -1,7 +1,3 @@
-Here’s a **comprehensive list of all implemented features** for your **Akoma Apparel** backend, formatted in **Markdown** for documentation or portfolio use:
-
----
-
 ```markdown
 # 🧵 Akoma Apparel – Backend Feature List
 
