@@ -7,6 +7,11 @@ import {
   getProductById,
   createProduct,
   deleteProduct,
+  updateProduct,
+  getProductsByCategory,
+  searchProducts,
+  getProductsByPrice,
+  getProductsByRating,
 } from '../controllers/productController';
 
 const router = express.Router();
@@ -24,5 +29,11 @@ router.get('/', getProducts);
 router.get('/:id', getProductById);
 router.post('/', protect, authHandler(adminOnly), createProduct);
 router.delete('/:id', protect, authHandler(adminOnly), deleteProduct);
+router.put('/:id', protect, authHandler(adminOnly), updateProduct);
+router.get('/category/:category', getProductsByCategory);
+router.get('/search', searchProducts);
+router.get('/price', getProductsByPrice);
+router.get('/rating', getProductsByRating);
+
 
 export default router;
