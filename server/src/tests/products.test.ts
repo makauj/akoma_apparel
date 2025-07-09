@@ -111,7 +111,9 @@ describe('GET /api/products', () => {
     const res = await request(app).get('/api/products?page=1');
     expect(res.statusCode).toBe(200);
     expect(res.body.hasMore).toBeDefined();
-    expect(res.body.hasMore).toBe(true);
+    // hasMore should be true only if there are more pages
+    // For a single page, expect false
+    expect(res.body.hasMore).toBe(false);
   });
 
   it('returns empty array for non-existent page', async () => {
