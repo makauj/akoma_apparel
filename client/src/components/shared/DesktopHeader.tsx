@@ -15,7 +15,7 @@ const navItems = [
   "Sustainability",
 ];
 
-const SearchHeader = () => {
+const Header = () => {
   return (
     <header className="w-full bg-white">
       {/* Top Banner */}
@@ -65,4 +65,4 @@ const SearchHeader = () => {
   );
 };
 
-export default SearchHeader;
+export default Header;
