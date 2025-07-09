@@ -18,6 +18,8 @@ export const getCart = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
+// @desc    Add product to cart
+// @route   POST /api/cart/add
 export const addToCart = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const userId = req.user._id;
@@ -62,6 +64,8 @@ export const addToCart = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
+// @desc    Update cart item quantity
+// @route   PUT /api/cart/update
 export const updateCartItem = async (req: AuthenticatedRequest, res: Response): Promise<Response> => {
   try {
     const userId = req.user._id;
@@ -99,6 +103,9 @@ export const updateCartItem = async (req: AuthenticatedRequest, res: Response): 
     });
   }
 };
+
+// @desc    Remove product from cart
+// @route   DELETE /api/cart/remove/:productId
 export const removeFromCart = async (req: AuthenticatedRequest, res: Response): Promise<Response> => {
   try {
     const userId = req.user._id;
@@ -131,6 +138,28 @@ export const clearCart = async (req: AuthenticatedRequest, res: Response) => {
     res.status(200).json({ message: 'Cart cleared' });
   } catch (error) {
     console.error('Error clearing cart:', error);
+    res.status(500).json({ 
+      message: 'Server error', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
+  }
+};
+
+// @desc    Get cart item count
+// @route   GET /api/cart/count
+export const getCartCount = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user._id;
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      return res.status(200).json({ count: 0 });
+    }
+
+    const count = cart.items.reduce((total, item) => total + item.quantity, 0);
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Error getting cart count:', error);
     res.status(500).json({ 
       message: 'Server error', 
       error: error instanceof Error ? error.message : 'Unknown error' 

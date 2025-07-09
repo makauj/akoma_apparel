@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
+import paymentRoutes from './routes/paymentRoutes';
 import { notFound, errorHandler } from './middleware/errorMiddleware';
 import cartRoutes from './routes/cartRoutes';
 
@@ -32,9 +33,10 @@ app.get('/api', (_req, res) => {
 // Routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/auth', userRoutes); // Add auth alias for backward compatibility
+app.use('/api/auth', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Error middlewares (should come after routes!)
 app.use(notFound);
