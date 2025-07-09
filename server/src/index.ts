@@ -33,7 +33,7 @@ app.get('/api', (_req, res) => {
 // Routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/auth', userRoutes); // Add auth alias for backward compatibility
+app.use('/api/auth', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/payments', paymentRoutes);
