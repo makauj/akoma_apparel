@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DesktopRegister from './pages/auth/DesktopSignup';
 import DesktopSignin from './pages/auth/DesktopLogin';
 import EmailVerificationPage from './pages/auth/EmailVerPage';
