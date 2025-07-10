@@ -5,6 +5,8 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import OrderSummary from './OrderSummary'
+import { motion } from 'framer-motion';
 
 const CheckoutSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -25,38 +27,30 @@ export default function CheckoutForm() {
 
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
-  const { cart, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { cart, clearCart } = useCart();
+  const navigate = useNavigate();
+  const total = cart.reduce((sum, item) => Number(sum) + Number(item.price) * Number(item.quantity), 0);
 
-  // Calculate total from cart items
-  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const totalInCents = Math.round(total * 100); // Convert to cents for Stripe
+  // Show summary on mobile toggle
+  const [showSummary] = useState<boolean>(false);
 
   const onSubmit = async (data: CheckoutFormData) => {
+    if (!stripe || !elements) return;
     setLoading(true);
     setError('');
 
-    if (!stripe || !elements) return;
-
-    // Check if cart is empty
-    if (cart.length === 0) {
-      setError('Your cart is empty');
-      setLoading(false);
-      return;
-    }
-
     try {
-      // 1. Create payment intent with actual cart total
+      const amount = cart.reduce((sum, item) => Number(sum) + Number(item.price) * Number(item.quantity), 0);
+
       const res = await fetch('/api/payments/intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: totalInCents }),
+        body: JSON.stringify({ amount }),
       });
       const { clientSecret } = await res.json();
 
-      // 2. Confirm card payment
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement)!,
@@ -70,7 +64,6 @@ export default function CheckoutForm() {
       if (result.error) {
         setError(result.error.message || 'Payment failed');
       } else if (result.paymentIntent?.status === 'succeeded') {
-        // 3. Create order with cart items
         await fetch('/api/orders', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -80,13 +73,10 @@ export default function CheckoutForm() {
             address: data.address,
             paymentIntentId: result.paymentIntent.id,
             items: cart,
-            total: total,
           }),
         });
-
-        // 4. Clear cart and redirect to success page
         clearCart();
-        navigate('/order-success');
+        navigate('/orderSuccess');
       }
     } catch {
       setError('An error occurred. Try again.');
@@ -109,8 +99,19 @@ export default function CheckoutForm() {
             <svg className="w-4 h-4 mr-2 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5zM10 12a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
             </svg>
-            Order Summary
           </h3>
+
+          {(showSummary || typeof window !== 'undefined' && window.innerWidth >= 768) && (
+            <motion.div
+              className="bg-white p-8 rounded-2xl shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-3xl font-semibold mb-6 text-amber-600">🧾 Order Summary</h2>
+              <OrderSummary />
+            </motion.div>
+          )}
           {cart.length === 0 ? (
             <div className="text-center py-6">
               <svg className="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,12 +123,12 @@ export default function CheckoutForm() {
           ) : (
             <div className="space-y-3">
               {cart.map((item) => (
-                <div key={item.productId} className="flex justify-between items-center py-2 px-3 bg-white rounded-lg shadow-sm border border-gray-100">
+                <div key={item.id} className="flex justify-between items-center py-2 px-3 bg-white rounded-lg shadow-sm border border-gray-100">
                   <div className="flex-1">
                     <span className="font-medium text-gray-900 text-sm">{item.name}</span>
                     <span className="text-gray-500 ml-2 text-sm">× {item.quantity}</span>
                   </div>
-                  <span className="font-semibold text-amber-600 text-sm">KES {(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="font-semibold text-amber-600 text-sm">KES {(Number(item.price) * Number(item.quantity)).toFixed(2)}</span>
                 </div>
               ))}
               <div className="border-t border-amber-200 pt-3 mt-3">
@@ -206,18 +207,20 @@ export default function CheckoutForm() {
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">Card Details</label>
             <div className="border-2 border-gray-200 rounded-lg p-4 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-200 transition-all duration-200">
-              <CardElement options={{ 
-                hidePostalCode: true,
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#374151',
-                    '::placeholder': {
-                      color: '#9CA3AF',
+              <CardElement
+                options={{ 
+                  hidePostalCode: true,
+                  style: {
+                    base: {
+                      fontSize: '16px',
+                      color: '#374151',
+                      '::placeholder': {
+                        color: '#9CA3AF',
+                      },
                     },
-                  },
-                },
-              }} />
+                  }
+                }}
+              />
             </div>
           </div>
         </div>

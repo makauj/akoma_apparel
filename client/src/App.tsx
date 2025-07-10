@@ -14,6 +14,8 @@ import ProductListPage from './pages/ProductListPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/Checkout';
+import OrderSuccess from './pages/OrderSuccess';
+
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
               <Route path="/products/:id" element={<ProductDetailPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/orderSuccess" element={<OrderSuccess/>} />
               <Route path="*" element={
                 <div className="flex flex-col items-center justify-center min-h-screen text-center">
                   <div className="bg-white rounded-2xl shadow-xl p-12 max-w-md mx-auto">
