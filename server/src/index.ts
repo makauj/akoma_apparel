@@ -17,7 +17,10 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/akoma_appa
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:4322', // Astro dev server
+  credentials: true
+}));
 app.use(express.json());
 
 // Health check route

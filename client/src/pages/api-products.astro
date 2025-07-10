@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+export const prerender = false;
+---
+
+<Layout title="Products - Akoma Apparel">
+  <div class="container mt-5">
+    <h1 class="text-center mb-5">Our Products</h1>
+    <div id="products-root"></div>
+  </div>
+  
+  <script>
+    import ProductList from '../components/components/products/ProductList';
+    import { AuthProvider } from '../contexts/AuthContext';
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+
+    const App = () => {
+      return React.createElement(AuthProvider, null,
+        React.createElement(ProductList)
+      );
+    };
+
+    const container = document.getElementById('products-root');
+    if (container) {
+      const root = createRoot(container);
+      root.render(React.createElement(App));
+    }
+  </script>
+</Layout>

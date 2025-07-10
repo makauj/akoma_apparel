@@ -1,0 +1,130 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductList from '../components/components/products/ProductList';
+---
+
+<Layout title="API Demo">
+  <main>
+    <div class="container mt-5">
+      <h1>Backend Integration Demo</h1>
+      <p class="lead">This page demonstrates how to use the API endpoints we've created.</p>
+      
+      <div class="row">
+        <div class="col-md-8">
+          <h2>Products from API</h2>
+          <ProductList client:load />
+        </div>
+        <div class="col-md-4">
+          <h3>API Endpoints Available</h3>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>GET</strong> /api/products
+              <br>
+              <small class="text-muted">Get all products</small>
+            </li>
+            <li class="list-group-item">
+              <strong>GET</strong> /api/products/[id]
+              <br>
+              <small class="text-muted">Get specific product</small>
+            </li>
+            <li class="list-group-item">
+              <strong>POST</strong> /api/products
+              <br>
+              <small class="text-muted">Create new product</small>
+            </li>
+            <li class="list-group-item">
+              <strong>PUT</strong> /api/products/[id]
+              <br>
+              <small class="text-muted">Update product</small>
+            </li>
+            <li class="list-group-item">
+              <strong>DELETE</strong> /api/products/[id]
+              <br>
+              <small class="text-muted">Delete product</small>
+            </li>
+            <li class="list-group-item">
+              <strong>GET/POST/DELETE</strong> /api/cart
+              <br>
+              <small class="text-muted">Cart operations</small>
+            </li>
+          </ul>
+          
+          <div class="mt-4">
+            <h4>Test API</h4>
+            <button id="testApi" class="btn btn-primary">Test Products API</button>
+            <button id="testCart" class="btn btn-secondary mt-2">Test Cart API</button>
+            <div id="apiResult" class="mt-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const testApiBtn = document.getElementById('testApi');
+      const testCartBtn = document.getElementById('testCart');
+      const resultDiv = document.getElementById('apiResult');
+
+      if (testApiBtn && resultDiv) {
+        testApiBtn.addEventListener('click', async function() {
+          try {
+            resultDiv.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Testing...';
+            
+            const response = await fetch('/api/products');
+            const data = await response.json();
+            
+            resultDiv.innerHTML = `
+              <div class="alert alert-success">
+                <strong>Products API Test:</strong><br>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+              </div>
+            `;
+          } catch (error) {
+            resultDiv.innerHTML = `
+              <div class="alert alert-danger">
+                <strong>API Error:</strong> ${error.message}
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (testCartBtn && resultDiv) {
+        testCartBtn.addEventListener('click', async function() {
+          try {
+            resultDiv.innerHTML = '<div class="spinner-border spinner-border-sm"></div> Testing Cart...';
+            
+            // Test adding to cart
+            const addResponse = await fetch('/api/cart', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ productId: '01', quantity: 1 })
+            });
+            const addData = await addResponse.json();
+            
+            // Test getting cart
+            const getResponse = await fetch('/api/cart');
+            const getData = await getResponse.json();
+            
+            resultDiv.innerHTML = `
+              <div class="alert alert-info">
+                <strong>Cart API Test:</strong><br>
+                <strong>Add to Cart:</strong><br>
+                <pre>${JSON.stringify(addData, null, 2)}</pre>
+                <strong>Get Cart:</strong><br>
+                <pre>${JSON.stringify(getData, null, 2)}</pre>
+              </div>
+            `;
+          } catch (error) {
+            resultDiv.innerHTML = `
+              <div class="alert alert-danger">
+                <strong>Cart API Error:</strong> ${error.message}
+              </div>
+            `;
+          }
+        });
+      }
+    });
+  </script>
+</Layout>

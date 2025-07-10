@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../../assets/scss/akomaApparel.scss';
+import Navbar from '../components/components/navbar';
+import CardProduct from '../components/components/products/cardProduct';
+import ProductOverviewGrid from '../components/components/products/productOverviewGrid';
+import StoreDoubleColumn from '../components/components/store/storeDoubleColumn';
+import ReviewSummaryChart from '../components/components/reviews/reviewSummaryChart';
+
+const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'http://localhost:5000';
+
+// Get product ID from URL params - for now, we'll use a default product ID
+// In a real app, this would come from URL params like /product/[id]
+const productId = '676b9bf2cb10885f8a39b1b1'; // Default product ID
+
+let product = null;
+let products = [];
+let productReviews: any[] = [];
+let error = null;
+
+try {
+  // Fetch the specific product
+  const productResponse = await fetch(`${API_BASE_URL}/api/products/${productId}`);
+  if (productResponse.ok) {
+    product = await productResponse.json();
+  } else {
+    error = 'Product not found';
+  }
+
+  // Fetch all products for "customers also purchased" section
+  const productsResponse = await fetch(`${API_BASE_URL}/api/products`);
+  if (productsResponse.ok) {
+    const productsData = await productsResponse.json();
+    products = productsData.data || productsData || [];
+  }
+
+  // Mock reviews data (since reviews aren't implemented in backend yet)
+  productReviews = [
+    {
+      avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      name: "Hector Gibbs",
+      date: "July 17, 2023",
+      rating: 5,
+      comment: "As we live, our hearts turn colder. Cause pain is what we go through as we become older. We get insulted by others, lose trust for those others. We get back stabbed by friends.",
+      productID: productId
+    },
+    {
+      avatar: "https://images.unsplash.com/photo-1618077360395-f3068be8e001?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      name: "Willie Manson",
+      date: "Aug 18, 2023",
+      rating: 4,
+      comment: "It really matters and then like it really doesn't matter. What matters is the people who are sparked by it. And the people who are like offended by it, it doesn't matter.",
+      productID: productId
+    }
+  ];
+} catch (err) {
+  console.error('Error fetching product data:', err);
+  error = 'Failed to load product data';
+}
+---
+
+<Layout title="Product Page">
+	<main>
+    <Navbar />
+    <div class="container mt-5">
+      {error ? (
+        <div class="alert alert-danger">
+          <h4>Error</h4>
+          <p>{error}</p>
+          <a href="/products" class="btn btn-primary">View All Products</a>
+        </div>
+      ) : product ? (
+        <>
+          <ProductOverviewGrid  
+            colors={product.colors || []}
+            images={product.images || []}
+            title={product.name || product.title || 'Untitled Product'}
+            full_description={product.description || 'No description available'}
+            price={product.price || 0}
+            highlights={product.highlights || []}
+            details={product.details || 'No details available'}
+            rating={product.rating || 0}
+            reviews={product.reviews || 0}
+            sizes={product.sizes || product.variants?.sizes || {}}
+          />    
+
+          <div class="my-5">
+            <ReviewSummaryChart reviews={productReviews}/>
+          </div>
+
+          <div class="row">
+            <h5 class="mb-4">Customers also purchased</h5>
+            {products.slice(0, 4).map((productItem: any, index: number) => 
+              <div class="col-md-6 col-lg-3">
+                <CardProduct 
+                  thumb_src={productItem.images?.[0]?.src || productItem.imageUrl || "/images/placeholder.jpg"}
+                  thumb_alt={productItem.images?.[0]?.alt || productItem.name || "Product image"}
+                  color={productItem.color || "Various colors"}
+                  title={productItem.name || productItem.title || "Untitled Product"}
+                  price={productItem.price || 0}
+                  position="left"
+                  description={productItem.description || "No description available"}
+                  colors={productItem.colors || []}
+                />
+              </div>
+            )}        
+          </div>
+        </>
+      ) : (
+        <div class="text-center">
+          <p>Loading product...</p>
+        </div>
+      )}
+      
+      <hr class="dark horizontal my-5" />
+      <StoreDoubleColumn />
+    </div>
+  </main>
+</Layout>

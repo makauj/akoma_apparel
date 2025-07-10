@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import data from '../../data.json';
+import '../../assets/scss/akomaApparel.scss';
+import Navbar from '../components/navbar';
+import UpperNavbar from '../components/store/upperNavbar';
+import CardProduct from '../components/products/cardProduct';
+import ShoppingCartComponent from '../components/cart/shoppingCart';
+import StoreDoubleColumn from '../components/store/storeDoubleColumn';
+
+let cartItems: any[] = [];
+data.shoppingCart.map((id: any) => 
+  data.products.filter((x: any) => x.id == id).map((x: any) => cartItems.push(x))
+)
+---
+
+<Layout title="Shopping Cart">
+	<main>
+    <Navbar />
+
+    <ShoppingCartComponent products = {cartItems}/>
+    
+    <div class="container mt-5">
+      <div class="row">
+        <h5 class="mb-4">You may also like...</h5>
+        {data.products.map((product: any) => 
+          <div class="col-md-6 col-lg-3">
+            <CardProduct 
+              thumb_src = {product.thumb_src}
+              thumb_alt = {product.thumb_alt}
+              color = {product.color || ""}
+              colors = {product.colors || []}
+              title = {product.title}
+              description = {product.description || ""}
+              price = {product.price}
+              position = "left"
+            />
+          </div>
+        )}        
+      </div>
+      <hr class="dark horizontal my-5" />
+      <StoreDoubleColumn />
+    </div>
+  </main>
+
+</Layout>

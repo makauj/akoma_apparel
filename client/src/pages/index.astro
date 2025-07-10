@@ -1,0 +1,410 @@
+---
+import Layout from '../layouts/Layout.astro';
+import data from '../data.json';
+import '../../assets/scss/akomaApparel.scss';
+import Navbar from '../components/components/navbar';
+import ComplexNavbar from '../components/components/complexNavbar';
+import ComplexNavbarDark from '../components/components/complexNavbarDark';
+import Footer from '../components/components/footer';
+import ComplexFooter from '../components/components/complexFooter';
+import CardProduct from '../components/components/products/cardProduct';
+import CardCategory from '../components/components/products/cardCategory';
+import ProductOverviewGrid from '../components/components/products/productOverviewGrid';
+import ProductOverviewGallery from '../components/components/products/productOverviewGallery';
+import ShoppingCart from '../components/components/cart/shoppingCart';
+import ShoppingCart2 from '../components/components/cart/shoppingCart2';
+import ProductQuickview from '../components/components/products/productQuickview';
+import ProductQuickview2 from '../components/components/products/productQuickview2';
+import ProductFeature from '../components/components/products/productFeature';
+import ProductFeature2 from '../components/components/products/productFeature2';
+import CategoryFilters from '../components/components/products/categoryFilters';
+import TestimonialsFade from '../components/components/promo/testimonialsFade';
+import PromoSectionLarge from '../components/components/promo/promoSectionLarge';
+import CheckoutOrderSummary from '../components/components/checkout/checkoutOrderSummary';
+import CheckoutMultiStep from '../components/components/checkout/checkoutMultiStep';
+import ReviewSimple from '../components/components/reviews/reviewSimple';
+import ReviewSummaryChart from '../components/components/reviews/reviewSummaryChart';
+import OrderSummaries from '../components/components/order/orderSummaries';
+import OrderHistory from '../components/components/order/orderHistory';
+import IncentiveLarge from '../components/components/incentives/incentiveLarge';
+import IncentiveCols from '../components/components/incentives/incentiveCols';
+
+let cartItems: any[] = [];
+data.shoppingCart.map(id => 
+  data.products.filter(x => x.id == id).map(x => cartItems.push(x))
+)
+let cartItems2: any[] = [];
+data.shoppingCart2.map(id => 
+  data.products.filter(x => x.id == id).map(x => cartItems2.push(x))
+)
+
+// filter reviews with ID 01
+let productReviews = data.reviews.filter(x => x.productID == "01");
+
+let orderProducts: any[] = [];
+
+data.orders[0].products.forEach(productDetails => {
+  data.products.forEach(product => {
+    if (product.id == productDetails.id) {
+      orderProducts.push(product);
+    }
+  });
+})
+
+let orderHistoryProducts: any[] = [];
+
+data.orders.forEach((order) => {
+  order.products.forEach(productDetails => {
+    data.products.forEach(product => {
+      if (product.id == productDetails.id) {
+        orderHistoryProducts.push(product);
+      }
+    });
+  })
+})
+
+---
+
+<script>
+  function toggleHeart(e: Event) {
+    const target = e.target as HTMLElement;
+    target.classList.toggle('fas');
+    target.classList.toggle('far');
+    target.classList.toggle('text-danger');
+  }
+  
+  const heart1 = document.getElementById('heart1');
+  if (heart1) {
+    heart1.addEventListener("click", toggleHeart);
+  }
+</script>
+
+<Layout title="Akoma Apparel">
+	<main>
+    <Navbar />
+    <div class="container mt-5">
+      <h3>Product Lists</h3>
+      <p>Components and blocks for Product Lists</p>
+      <div class="row mt-5">
+        {data.products.map(product => 
+          <div class="col-md-6 col-lg-3">
+            <CardProduct 
+              thumb_src = {product.thumb_src}
+              thumb_alt = {product.thumb_alt}
+              color = {product.color}
+              colors = {product.colors || []}
+              title = {product.title}
+              description = {product.description}
+              price = {product.price}
+              position = "center"
+            />
+          </div>
+        )}        
+      </div>
+
+      <h3>Product Lists</h3>
+      <p>Cards with full details</p>
+      <div class="row">
+        {data.products.map(product => 
+          <div class="col-md-6 col-lg-3">
+            <CardProduct 
+              thumb_src = {product.thumb_src}
+              thumb_alt = {product.thumb_alt}
+              color = {product.color}
+              colors = {product.colors || []}
+              title = {product.title}
+              description = {product.description}
+              price = {product.price}
+              position = "left"
+            />
+          </div>
+        )}        
+      </div>
+
+      <div class="row mb-8">
+        <div class="d-block text-center mb-5">
+          <h3>Shop by category</h3>
+          <a class="text-dark font-weight-bold" href="#">Browse all categories &#62;</a>
+        </div>
+        {data.categories.slice(0, 4).map(category => 
+          <div class="col-md-6 col-lg-3">
+            <CardCategory
+              thumb_src = {category.thumb_src}
+              title = {category.title}
+              collection = {category.collection}
+              classList = ""
+              cta = "See products"
+            />
+          </div>
+        )}
+      </div>
+
+      <div class="row mb-5">
+        <div class="d-block text-center mb-5">
+          <h3>Shop by category</h3>
+          <a class="text-dark font-weight-bold" href="#">Browse all categories &#62;</a>
+        </div>
+        <div class="col-md-6">
+          <CardCategory
+            classList = "h-100"
+            cta = ""
+            thumb_src = {data.categories[4].thumb_src}
+            title = {data.categories[4].title}
+            collection = {data.categories[4].collection}
+          />
+        </div>
+        <div class="col-md-6">
+          <div class="mb-4">
+            <CardCategory
+              classList = ""
+              cta = ""
+              thumb_src = {data.categories[5].thumb_src}
+              title = {data.categories[5].title}
+              collection = {data.categories[5].collection}
+            />
+          </div>
+          <div class="">
+            <CardCategory
+              classList = ""
+              cta = ""
+              thumb_src = {data.categories[6].thumb_src}
+              title = {data.categories[6].title}
+              collection = {data.categories[6].collection}
+            />
+          </div>
+        </div>
+      </div>
+
+
+      {/* Temporarily disabled due to type issues
+      <div class="my-10">
+        <h3>Product Overview</h3>
+        <p class="mb-5">With image grid</p>
+
+        <ProductOverviewGrid  
+          colors={data.products[0].colors || []}
+          images={data.products[0].images || []}
+          title={data.products[0].title}
+          full_description={data.products[0].full_description || ""}
+          price={data.products[0].price}
+          highlights={data.products[0].highlights || []}
+          details={data.products[0].details || ""}
+          rating={data.products[0].rating || 0}
+          reviews={data.products[0].reviews || 0}
+          sizes={new Map()}
+        />
+      </div>
+
+      <div class="my-5">
+        <h3>Product Overview</h3>
+        <p class="mb-5">Product Overviews with image gallery and expandable details</p>
+
+        <ProductOverviewGallery 
+          colors={data.products[1].colors || []} 
+          images={data.products[1].images || []}
+          title={data.products[1].title}
+          full_description={data.products[1].full_description || ""}
+          price={data.products[1].price}
+          rating={data.products[1].rating || 0}
+          reviews={data.products[1].reviews || 0}
+          data={new Map()}
+        />
+      </div>
+      */}
+
+
+      <div class="my-10">
+        <ShoppingCart
+          products = {cartItems}
+        />
+      </div>
+
+      <div class="my-10">
+        <ShoppingCart2
+          products = {cartItems2}
+        />
+      </div>
+
+      <div class="my-10">
+        <h3>Category filters</h3>
+        <p class="mb-5">With inline actions and expandable sidebar filters</p>
+        <CategoryFilters 
+          title="Our products"
+        />
+      </div>
+
+      {/* Temporarily disabled due to type issues
+      <div class="my-10">
+        <h3>Product Quickviewers</h3>
+        <p class="mb-5">With color selector, size selector, and details link</p>
+
+        <ProductQuickview 
+          colors={data.products[0].colors || []}
+          thumb_src={data.products[0].thumb_src}
+          title={data.products[0].title}
+          price={data.products[0].price}
+          rating={data.products[0].rating || 0}
+          reviews={data.products[0].reviews || 0}
+          sizes={new Map()}
+          images={data.products[0].images || []}
+        />
+
+        <h3 class="mt-7">Product Quickviewers</h3>
+        <p class="mb-5">With large size selector</p>
+        <ProductQuickview2 
+          colors={data.products[1].colors || []}
+          thumb_src="/images/mirror.png"
+          title="Sofa"
+          price={data.products[1].price}
+          rating={data.products[1].rating || 0}
+          reviews={data.products[1].reviews || 0}
+        />
+      </div>
+
+      <div class="my-10">
+        <ProductFeature
+          title={data.products[0].title}
+          images={data.products[2].images || []}
+          full_description={data.products[0].full_description || ""}
+          featuresDetails={new Map()}
+        />
+      </div>
+
+      <div class="my-10">
+        <ProductFeature2
+          title={data.products[0].title}
+          full_description={data.products[0].full_description || ""}
+          images={data.products[2].images || []}
+          data={new Map()}
+        />
+      </div>
+      */}
+
+      <div class="my-10">
+        <h3 class="mt-5">Complex Navbar White</h3>
+        <a class="text-dark font-weight-bold" href="#">Browse all categories &#62;</a>
+        <br/><br/>
+        <ComplexNavbar />
+        <div class="row mt-4">
+          {data.products.map(product => 
+            <div class="col-12 col-md-6 col-lg-3">
+              <CardProduct
+                thumb_src = {product.thumb_src}
+                thumb_alt = {product.thumb_alt}
+                title = {product.title}
+                price={product.price}
+                description={product.description || ""}
+                color={product.color || ""}
+                colors={product.colors || []}
+                position="center"
+              />
+            </div>
+          )}        
+        </div>
+
+        <h3 class="mt-5">Complex Navbar Dark</h3>
+        <a class="text-dark font-weight-bold" href="#">Browse all categories &#62;</a>
+        <br/><br/>
+        <ComplexNavbarDark />
+        <div class="row mt-4">
+          {data.products.map(product => 
+            <div class="col-12 col-md-6 col-lg-3">
+              <CardProduct
+                thumb_src = {product.thumb_src}
+                thumb_alt = {product.thumb_alt}
+                title = {product.title}
+                price={product.price}
+                description={product.description || ""}
+                color={product.color || ""}
+                colors={product.colors || []}
+                position="center"
+              />
+            </div>
+          )}        
+        </div>
+      </div>
+
+      <div class="my-10">
+        <h3>Simple Footer</h3>
+        <Footer />
+
+        <h3 class="mt-8">Complex Footer</h3>
+        <ComplexFooter />
+      </div>
+
+      <div class="my-10">
+        <h3 class="mt-5">Promo Sections</h3>
+        <p class="text-body">Full-width with background image and large content</p>
+        <TestimonialsFade 
+          pageHeaderBgImg={"https://images.unsplash.com/photo-1534802046520-4f27db7f3ae5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2729&q=80"} 
+          pageHeaderMinVh="50vh"
+        />
+      </div>
+
+      <div class="my-10">
+        <h3 class="mt-5">Promo Sections</h3>
+        <p class="text-body">With fading background image and testimonials</p>
+        <PromoSectionLarge 
+          title={data.products[0].title}
+          full_description="The time is now for it to be okay to be great. People in this world shun people for being great. For being a bright color. For standing out. But the time is now to be okay to be the greatest you. Would you believe in what you believe in, if you were the only one who believed it?"  
+          pageHeaderBgImg={"https://images.unsplash.com/photo-1525904097878-94fb15835963?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"} 
+          pageHeaderMinVh="50vh"
+          pageHeaderRadius="1rem"
+        />
+      </div>
+
+      <div class="my-10">
+        <h3>Checkout Forms</h3>
+        <p>Split with order summary</p>
+        <CheckoutOrderSummary 
+          products = {cartItems}
+          textColor = "dark"
+        />
+      </div>
+
+      <div class="my-10">
+        <h3>Checkout Forms</h3>
+        <p>SWith order summary sidebar</p>
+        <CheckoutMultiStep
+          products = {cartItems2}
+        />
+      </div>
+
+      <div class="my-10">
+        <h3 class="mt-5">Product reviews</h3>
+        <p class="text-body">Simple with avatars</p>
+        <ReviewSimple reviews = {data.reviews}/>
+      </div>
+
+      {/* Temporarily disabled due to type issues
+      <div class="my-10">
+        <h3 class="mt-5">Product reviews</h3>
+        <p class="text-body">With summary chart</p>
+        <ReviewSummaryChart reviews = {productReviews}/>
+      </div>
+
+      <div class="my-10">
+        <h3 class="mt-5">Order Summaries</h3>
+        <p class="text-body">With order summary sidebar</p>
+        <OrderSummaries order={data.orders[0]} products={orderProducts} />
+      </div>
+
+      <div class="my-10">
+        <OrderHistory orders = {data.orders} products={orderHistoryProducts} />
+      </div>
+      */}
+
+      <div class="my-10">
+        <IncentiveLarge />
+      </div>
+
+      <div class="my-10">
+        <h3 class="mt-5">Features</h3>
+        <p class="text-body">3-column with illustrations and header</p>
+        <IncentiveCols />
+      </div>
+      
+      <Footer />
+    </div>
+	</main>
+</Layout>

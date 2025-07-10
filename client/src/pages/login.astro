@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+export const prerender = false;
+---
+
+<Layout title="Login - Akoma Apparel">
+  <div id="login-root"></div>
+  
+  <script>
+    import LoginForm from '../components/auth/LoginForm';
+    import { AuthProvider } from '../contexts/AuthContext';
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+
+    const App = () => {
+      return React.createElement(AuthProvider, null,
+        React.createElement(LoginForm)
+      );
+    };
+
+    const container = document.getElementById('login-root');
+    if (container) {
+      const root = createRoot(container);
+      root.render(React.createElement(App));
+    }
+  </script>
+</Layout>

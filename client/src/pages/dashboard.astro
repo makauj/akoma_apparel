@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+export const prerender = false;
+---
+
+<Layout title="Dashboard - Akoma Apparel">
+  <div id="dashboard-root"></div>
+  
+  <script>
+    import UserDashboard from '../components/user/UserDashboard';
+    import { AuthProvider } from '../contexts/AuthContext';
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+
+    const App = () => {
+      return React.createElement(AuthProvider, null,
+        React.createElement(UserDashboard)
+      );
+    };
+
+    const container = document.getElementById('dashboard-root');
+    if (container) {
+      const root = createRoot(container);
+      root.render(React.createElement(App));
+    }
+  </script>
+</Layout>

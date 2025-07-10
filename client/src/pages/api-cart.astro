@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+export const prerender = false;
+---
+
+<Layout title="Cart - Akoma Apparel">
+  <div id="cart-root"></div>
+  
+  <script>
+    import ApiShoppingCart from '../components/components/cart/ApiShoppingCart';
+    import { AuthProvider } from '../contexts/AuthContext';
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+
+    const App = () => {
+      return React.createElement(AuthProvider, null,
+        React.createElement(ApiShoppingCart)
+      );
+    };
+
+    const container = document.getElementById('cart-root');
+    if (container) {
+      const root = createRoot(container);
+      root.render(React.createElement(App));
+    }
+  </script>
+</Layout>

@@ -1,0 +1,226 @@
+---
+import Layout from '../layouts/Layout.astro';
+export const prerender = false;
+---
+
+<Layout title="Integration Demo - Akoma Apparel">
+  <div id="navigation-root"></div>
+  
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="text-center mb-5">Frontend-Backend Integration Demo</h1>
+        
+        <div class="alert alert-info" role="alert">
+          <h4 class="alert-heading">Welcome to the Integration Demo!</h4>
+          <p>This page demonstrates the full integration between the Astro/React frontend and the Express/MongoDB backend.</p>
+          <hr>
+          <p class="mb-0">
+            <strong>Features demonstrated:</strong> Authentication, Products API, Shopping Cart, User Dashboard, and more.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="fas fa-users text-primary"></i> Authentication
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Complete user authentication system with JWT tokens, registration, login, and protected routes.
+            </p>
+            <div class="d-grid gap-2">
+              <a href="/login" class="btn btn-primary">Login</a>
+              <a href="/register" class="btn btn-outline-primary">Register</a>
+              <a href="/dashboard" class="btn btn-info">Dashboard (Protected)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="fas fa-box text-success"></i> Products API
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Dynamic product listing from the backend with search, filtering, and real-time data.
+            </p>
+            <div class="d-grid gap-2">
+              <a href="/api-products" class="btn btn-success">View Products</a>
+              <a href="/api/products" class="btn btn-outline-success" target="_blank">API Endpoint</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="fas fa-shopping-cart text-warning"></i> Shopping Cart
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Full shopping cart functionality with add, update, remove items and checkout integration.
+            </p>
+            <div class="d-grid gap-2">
+              <a href="/api-cart" class="btn btn-warning">View Cart</a>
+              <a href="/api/cart" class="btn btn-outline-warning" target="_blank">Cart API</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="fas fa-code text-danger"></i> API Testing
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Test all backend endpoints directly and see response data in real-time.
+            </p>
+            <div class="d-grid gap-2">
+              <a href="/api-demo" class="btn btn-danger">API Demo</a>
+              <a href="http://localhost:5000/api/health" class="btn btn-outline-danger" target="_blank">Health Check</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              <i class="fas fa-info-circle text-info"></i> Integration Status
+            </h5>
+          </div>
+          <div class="card-body">
+            <div id="status-root">
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Checking status...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    import Navigation from '../components/navigation/Navigation';
+    import { AuthProvider } from '../contexts/AuthContext';
+    import { apiClient } from '../utils/api';
+    import React, { useEffect, useState } from 'react';
+    import { createRoot } from 'react-dom/client';
+
+    // Status component to check backend connectivity
+    function StatusChecker() {
+      const [status, setStatus] = useState('checking');
+      const [details, setDetails] = useState(null);
+
+      useEffect(() => {
+        checkBackendStatus();
+      }, []);
+
+      const checkBackendStatus = async () => {
+        try {
+          // Test basic connectivity
+          const response = await fetch('http://localhost:5000/api/health');
+          if (response.ok) {
+            const data = await response.json();
+            setDetails(data);
+            setStatus('connected');
+          } else {
+            setStatus('error');
+          }
+        } catch (error) {
+          setStatus('disconnected');
+        }
+      };
+
+      const StatusIcon = ({ status }) => {
+        switch (status) {
+          case 'connected':
+            return React.createElement('i', { className: 'fas fa-check-circle text-success' });
+          case 'disconnected':
+            return React.createElement('i', { className: 'fas fa-times-circle text-danger' });
+          case 'error':
+            return React.createElement('i', { className: 'fas fa-exclamation-triangle text-warning' });
+          default:
+            return React.createElement('div', { className: 'spinner-border spinner-border-sm' });
+        }
+      };
+
+      return React.createElement('div', null,
+        React.createElement('div', { className: 'd-flex align-items-center mb-3' },
+          React.createElement(StatusIcon, { status }),
+          React.createElement('span', { className: 'ms-2' },
+            status === 'connected' ? 'Backend Connected' :
+            status === 'disconnected' ? 'Backend Disconnected' :
+            status === 'error' ? 'Backend Error' :
+            'Checking...'
+          )
+        ),
+        status === 'connected' && React.createElement('div', null,
+          React.createElement('p', { className: 'text-success mb-2' }, 
+            React.createElement('strong', null, '✅ All systems operational!')
+          ),
+          React.createElement('ul', { className: 'list-unstyled' },
+            React.createElement('li', null, '🔹 API Base URL: ', details?.apiUrl || 'http://localhost:5000'),
+            React.createElement('li', null, '🔹 Database: ', details?.database || 'Connected'),
+            React.createElement('li', null, '🔹 Environment: ', details?.environment || 'Development'),
+            React.createElement('li', null, '🔹 Timestamp: ', new Date().toLocaleString())
+          )
+        ),
+        status === 'disconnected' && React.createElement('div', null,
+          React.createElement('p', { className: 'text-danger mb-2' }, 
+            React.createElement('strong', null, '❌ Backend server is not running')
+          ),
+          React.createElement('ul', { className: 'list-unstyled' },
+            React.createElement('li', null, '• Make sure the Express server is running on port 5000'),
+            React.createElement('li', null, '• Check that CORS is properly configured'),
+            React.createElement('li', null, '• Verify the API_BASE_URL environment variable')
+          )
+        )
+      );
+    }
+
+    // Main app component
+    const App = () => {
+      return React.createElement(AuthProvider, null,
+        React.createElement(Navigation)
+      );
+    };
+
+    // Render navigation
+    const navContainer = document.getElementById('navigation-root');
+    if (navContainer) {
+      const navRoot = createRoot(navContainer);
+      navRoot.render(React.createElement(App));
+    }
+
+    // Render status checker
+    const statusContainer = document.getElementById('status-root');
+    if (statusContainer) {
+      const statusRoot = createRoot(statusContainer);
+      statusRoot.render(React.createElement(StatusChecker));
+    }
+  </script>
+</Layout>
