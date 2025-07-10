@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Auth Pages
-import DesktopRegister from './pages/auth/DesktopSignup';
-import DesktopSignin from './pages/auth/DesktopLogin';
+import DesktopRegister from './pages/auth/DesktopRegister';
+import DesktopLogin from './pages/auth/DesktopLogin';
+
 import EmailVerificationPage from './pages/auth/EmailVerPage';
 import WelcomeMessage from './pages/auth/WelcomePage';
 
@@ -25,7 +25,7 @@ function App() {
           <Routes>
             {/* Auth Routes */}
             <Route path="/auth/register" element={<DesktopRegister />} />
-            <Route path="/auth/signin" element={<DesktopSignin />} />
+            <Route path="/auth/signin" element={<DesktopLogin />} />
             <Route path="/auth/verify" element={<EmailVerificationPage />} />
             <Route path="/auth/welcome" element={<WelcomeMessage />} />
 
