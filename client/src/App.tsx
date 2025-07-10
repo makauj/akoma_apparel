@@ -2,25 +2,20 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import DesktopRegister from './pages/auth/DesktopRegister';
 import DesktopLogin from './pages/auth/DesktopLogin';
-
 import EmailVerificationPage from './pages/auth/EmailVerPage';
 import WelcomeMessage from './pages/auth/WelcomePage';
 
-// Other Pages
 import SearchPage01 from './pages/search/SearchPage01';
 import CartPage from './pages/checkout/CartPage';
 import ShippingPage from './pages/checkout/ShippingPage';
 
-// Optional shared layout
-// import DesktopHeader from './components/shared/DesktopHeader';
-// import DesktopFooter from './components/shared/DesktopFooter';
+import ProductListPage from './pages/products/ProductListPage';
+import DesktopFooter from './components/shared/DesktopFooter';
 
 function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        {/* <DesktopHeader /> */}
-
         <main className="flex-grow">
           <Routes>
             {/* Auth Routes */}
@@ -33,8 +28,9 @@ function App() {
             <Route path="/search/01" element={<SearchPage01 />} />
             <Route path="/checkout/cart" element={<CartPage />} />
             <Route path="/checkout/shipping" element={<ShippingPage />} />
+            <Route path="/products" element={<ProductListPage />} />
 
-            {/* Default route */}
+            {/* Default Route */}
             <Route
               path="/"
               element={<div className="text-center p-10">Home Page Placeholder</div>}
@@ -42,11 +38,12 @@ function App() {
           </Routes>
         </main>
 
-        <footer />
-        {/* <DesktopFooter /> */}
+        {/* Consistent Footer Across Pages */}
+        <DesktopFooter />
       </div>
     </Router>
   );
 }
 
 export default App;
+
