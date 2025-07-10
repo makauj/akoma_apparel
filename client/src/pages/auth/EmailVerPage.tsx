@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import DesktopHeader from "../../components/shared/DesktopHeader";
 import DesktopFooter from "../../components/shared/DesktopFooter";
 
-const WelcomePage = (): JSX.Element => {
+const EmailVerificationPage = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(true);
 
   if (!isOpen) {
@@ -38,7 +38,7 @@ const WelcomePage = (): JSX.Element => {
             }}
           />
 
-          {/* Dummy form area (you can update later) */}
+          {/* Form Section */}
           <div className="flex flex-col ml-[128px] mt-[120px] max-w-[392px] w-full">
             <h2 className="text-center text-3xl font-semibold text-[#0c0c0c] mb-6">
               Create Account
@@ -54,9 +54,9 @@ const WelcomePage = (): JSX.Element => {
         </div>
       </main>
 
-      {/* Welcome Modal */}
+      {/* Modal Rectangle */}
       <div className="fixed inset-0 z-20 flex items-center justify-center">
-        <div className="relative w-[854px] h-[446px] bg-white rounded-lg shadow-2xl border border-gray-200 p-10 text-center flex flex-col items-center justify-center">
+        <div className="relative w-[854px] h-[446px] bg-white rounded-lg shadow-2xl border border-gray-200">
           {/* Close button */}
           <button
             onClick={() => setIsOpen(false)}
@@ -65,22 +65,27 @@ const WelcomePage = (): JSX.Element => {
             <X className="w-4 h-4" />
           </button>
 
-          {/* Modal Content */}
-          <h2 className="text-3xl font-semibold text-[#0c0c0c] mb-4">
-            Welcome to Akoma Apparel
-          </h2>
-          <p className="text-lg italic text-[#0c0c0c] mb-6">
-            Elegance in simplicity, Earth’s harmony
-          </p>
-          <p className="text-base text-[#0c0c0c] mb-6">
-            Is it your first experience on Akoma Apparel?
-          </p>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="bg-[#748c70] text-white px-6 py-3 text-lg rounded hover:bg-[#5f7361] transition-colors"
-          >
-            Get Started
-          </button>
+          {/* Content */}
+          <div className="flex flex-col items-center justify-center h-full px-12 text-center">
+            <h2 className="text-2xl font-semibold text-[#0c0c0c] mb-8">
+              Verify Your Email Address
+            </h2>
+
+            <p className="text-base text-[#0c0c0c] mb-4 leading-relaxed max-w-md">
+              We've sent an email to{" "}
+              <span className="font-medium">nina@gmail.com</span> to verify your
+              email address and activate your account.
+            </p>
+
+            <p className="text-base text-[#0c0c0c] mb-6 leading-relaxed max-w-md">
+              The link in the email will expire in 24 hours.
+            </p>
+
+            <button className="text-[#748c70] underline hover:text-[#5f7361] transition-colors">
+              Click here if you did not receive an email or would like to change
+              the email address you registered with.
+            </button>
+          </div>
         </div>
       </div>
 
@@ -89,4 +94,5 @@ const WelcomePage = (): JSX.Element => {
   );
 };
 
-export default WelcomePage;
+export default EmailVerificationPage;
+  
