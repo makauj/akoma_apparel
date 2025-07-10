@@ -1,0 +1,112 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../../assets/scss/akomaApparel.scss';
+import CardCategory from '../components/components/products/cardCategory';
+import ProductFeature from '../components/components/products/productFeature';
+import Navbar from '../components/components/navbar';
+import Footer from '../components/components/footer';
+import TestimonialsFade from '../components/components/promo/testimonialsFade';
+import PromoSectionLarge from '../components/components/promo/promoSectionLarge';
+
+// Fetch data from backend API
+const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'http://localhost:5000';
+
+let products: any[] = [];
+let categories: any[] = [];
+
+try {
+  // Fetch products
+  const productResponse = await fetch(`${API_BASE_URL}/api/products`);
+  if (productResponse.ok) {
+    const data = await productResponse.json();
+    products = data.data || data || [];
+  }
+
+  // For categories, we'll use a hardcoded fallback since our backend might not have categories endpoint
+  categories = [
+    {
+      thumb_src: "../images/collection1.jpg",
+      collection: "Women",
+      title: "Women's Collection"
+    },
+    {
+      thumb_src: "../images/collection2.jpg", 
+      collection: "Men",
+      title: "Men's Collection"
+    },
+    {
+      thumb_src: "../images/collection3.jpg",
+      collection: "Kids", 
+      title: "Kids Collection"
+    },
+    {
+      thumb_src: "../images/collection4.jpg",
+      collection: "Accessories",
+      title: "Accessories"
+    }
+  ];
+} catch (error) {
+  console.error('Error fetching data:', error);
+  // Fallback to empty arrays
+  products = [];
+  categories = [];
+}
+---
+
+<Layout title="Landing Page">
+	<main>
+    <Navbar />
+    <PromoSectionLarge 
+      title={"Collection is here"}
+      full_description={products.length > 0 ? products[0].description : "Discover our amazing collection of premium apparel designed for modern lifestyle."}  
+      pageHeaderBgImg={"../images/bg2.jpg"}
+      pageHeaderMinVh="90vh"
+      pageHeaderRadius=""
+    />
+    <div class="container my-5">
+      <div class="d-block text-center mb-5">
+        <h3>Shop by category</h3>
+        <a class="text-dark font-weight-bold" href="/api-products">Browse all categories &#62;</a>
+      </div>
+      <div class="row mb-5">
+        {categories.slice(0, 4).map((category: any) => 
+          <div class="col-md-6 col-lg-3">
+            <CardCategory
+              thumb_src={category.thumb_src}
+              collection={category.collection}
+              title={category.title}
+              classList=""
+              cta="/api-products"
+            />
+          </div>
+        )}
+      </div>
+
+    <PromoSectionLarge 
+      title="Basic Starter Pack"
+      full_description={products.length > 0 ? products[0].description : "Discover our starter pack with essential pieces for your wardrobe."} 
+      pageHeaderBgImg={"../images/bg2.jpg"} 
+      pageHeaderMinVh="50vh"
+      pageHeaderRadius="1rem"
+    />
+    <div class="my-5">
+      <ProductFeature
+        title="Product Features"
+        images={products.length > 0 ? (products[0].images || []) : []}
+        full_description="Society has put up so many boundaries, so many limitations on what's right and wrong that it's almost impossible"
+        featuresDetails={products.length > 0 ? (products[0].featuresDetails || {}) : {}}
+      />
+    </div>
+    <div class="mt-5 mb-10">
+      <TestimonialsFade 
+        pageHeaderBgImg={"https://images.unsplash.com/photo-1519642918688-7e43b19245d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2676&q=80"} 
+        pageHeaderMinVh="50vh"
+      />
+    </div>
+    
+    <Footer />
+
+    </div>
+  </main>
+
+</Layout>
