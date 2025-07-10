@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import DesktopRegister from './pages/auth/DesktopRegister';
 import DesktopLogin from './pages/auth/DesktopLogin';
+
 import EmailVerificationPage from './pages/auth/EmailVerPage';
 import WelcomeMessage from './pages/auth/WelcomePage';
 
