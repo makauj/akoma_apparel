@@ -3,11 +3,10 @@ import { Input } from "../../components/ui/input.tsx";
 import { Button } from "../../components/ui/button.tsx";
 import DesktopHeader from "../../components/shared/DesktopHeader.tsx";
 import DesktopFooter from "../../components/shared/DesktopFooter.tsx";
-import { EyeIcon, EyeOffIcon, X } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 const DesktopLogin = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(true);
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,11 +24,6 @@ const DesktopLogin = (): JSX.Element => {
 
   return (
     <div className="relative flex flex-col min-h-screen bg-white">
-      {/* Background blur when modal is open */}
-      {isModalOpen && (
-        <div className="absolute inset-0 z-10 bg-white/40 backdrop-blur-sm"></div>
-      )}
-
       <DesktopHeader />
 
       <main className="flex-grow flex justify-center items-start px-[108px] py-[142px] relative z-0">
@@ -98,39 +92,6 @@ const DesktopLogin = (): JSX.Element => {
       </main>
 
       <DesktopFooter />
-
-      {/* Modal (only when open) */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-20 flex items-center justify-center px-4">
-          <div className="relative w-full max-w-[600px] bg-white rounded-xl shadow-2xl p-10 text-center">
-            {/* Close button */}
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              aria-label="Close Welcome"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            {/* Modal content */}
-            <h2 className="text-3xl font-semibold text-[#0c0c0c] mb-4">
-              Welcome to Akoma Apparel
-            </h2>
-            <p className="text-lg italic text-[#0c0c0c] mb-6">
-              Elegance in simplicity, Earth’s harmony
-            </p>
-            <p className="text-base text-[#0c0c0c] mb-6">
-              Is it your first experience on Akoma Apparel?
-            </p>
-            <Button
-              className="bg-[#748c70] text-white px-6 py-3 text-lg rounded hover:bg-[#6a7a66]"
-              onClick={() => setIsModalOpen(false)}
-            >
-              Get Started
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
