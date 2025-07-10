@@ -1,6 +1,11 @@
 import Stripe from 'stripe';
 import { Request, Response } from 'express';
+<<<<<<< HEAD
 
+=======
+import dotenv from 'dotenv'
+dotenv.config()
+>>>>>>> d43eb0ea12faac5e738d6b4ee026321542559b9b
 // Initialize Stripe with environment variable
 const stripeKey = process.env.STRIPE_SECRET_KEY;
 
@@ -8,12 +13,19 @@ if (!stripeKey) {
   throw new Error('STRIPE_SECRET_KEY environment variable is required');
 }
 
+<<<<<<< HEAD
 const stripe = new Stripe(stripeKey as string, {
   apiVersion: '2025-06-30.basil',
 });
 
 export const createCheckoutSession = async (req: Request, res: Response) => {
   const { items } = req.body;
+=======
+const stripe = new Stripe(stripeKey);
+
+export const createCheckoutSession = async (req: Request, res: Response) => {
+  const { items } = req.body; // expects [{ name, price, quantity }]
+>>>>>>> d43eb0ea12faac5e738d6b4ee026321542559b9b
 
   if (!items || !Array.isArray(items)) {
     return res.status(400).json({ message: 'Invalid items' });
@@ -51,6 +63,7 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Stripe error', error: err });
   }
 };
+<<<<<<< HEAD
 
 export const createPaymentIntent = async (req: Request, res: Response) => {
   try {
@@ -71,3 +84,5 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Stripe error', error: err.message });
   }
 };
+=======
+>>>>>>> d43eb0ea12faac5e738d6b4ee026321542559b9b
