@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
+import HomePage from './pages/HomePage';
 import DesktopRegister from './pages/auth/DesktopRegister';
 import DesktopLogin from './pages/auth/DesktopLogin';
 
@@ -37,7 +37,7 @@ function App() {
             {/* Default route */}
             <Route
               path="/"
-              element={<div className="text-center p-10">Home Page Placeholder</div>}
+              element={<HomePage />}
             />
           </Routes>
         </main>
