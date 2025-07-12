@@ -12,10 +12,8 @@ const Footer = () => {
           <h5 className="font-medium mb-2">Customer Care</h5>
           <ul className="space-y-1 text-sm text-gray-300">
             <li>Contact Us</li>
-            <li>Shipping</li>
             <li>Instagram</li>
             <li>Facebook</li>
-            <li>FAQs</li>
           </ul>
         </div>
       </div>

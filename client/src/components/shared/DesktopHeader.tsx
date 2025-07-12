@@ -6,9 +6,9 @@ const navItems = [
   { label: "Home", path: "/" },
   { label: "Categories", path: "/categories" },
   { label: "Search", path: "/search/01" },
-  { label: "Women", path: "/women" },
-  { label: "Men", path: "/men" },
-  { label: "Kids", path: "/kids" },
+  { label: "Women", path: "/products/women" },
+  { label: "Men", path: "/products/men" },
+  { label: "Kids", path: "/products/kids" },
 ];
 
 

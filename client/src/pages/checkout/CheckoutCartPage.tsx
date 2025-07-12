@@ -7,7 +7,7 @@ import type { CartItem  } from "../../types/cartItem";
 const JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjkyMWVmODc0YjE4MjkxN2ZhMzg3NSIsImlhdCI6MTc1MjA1NDUzNCwiZXhwIjoxNzU0NjQ2NTM0fQ.uy9f4CfGVk3LdrarSZDF_qJGZ-4YgAXS1LEpZTacl4s"
 
 
-const CartPage = (): JSX.Element => {
+const CheckoutCartPage = (): JSX.Element => {
   const [items, setItems] = useState<CartItem[]>([]);
   const navigate = useNavigate()
 
@@ -163,4 +163,4 @@ const handleRemove = async (productId: string) => {
   );
 };
 
-export default CartPage
+export default CheckoutCartPage
