@@ -1,6 +1,8 @@
 import DesktopHeader from "../../components/shared/DesktopHeader.tsx";
 import DesktopFooter  from "../../components/shared/DesktopFooter.tsx";
-export default function WomenProducts() {
+import type { JSX } from "react";
+
+const WomenProductsPage = (): JSX.Element => {
   return (
   <> 
     <DesktopHeader />
@@ -8,3 +10,4 @@ export default function WomenProducts() {
   </>
   )
 }
+export default WomenProductsPage

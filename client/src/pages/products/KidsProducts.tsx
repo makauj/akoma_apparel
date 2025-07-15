@@ -1,7 +1,8 @@
 import DesktopHeader from "../../components/shared/DesktopHeader.tsx";
 import DesktopFooter  from "../../components/shared/DesktopFooter.tsx";
+import type { JSX } from "react";
 
-export default function KidsProducts() {
+const KidsProductsPage = (): JSX.Element => {
   return (
   <> 
     <DesktopHeader />
@@ -9,3 +10,5 @@ export default function KidsProducts() {
   </>
   )
 }
+
+export default KidsProductsPage

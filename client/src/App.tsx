@@ -13,9 +13,9 @@ import CheckoutCartPage from './pages/checkout/CheckoutCartPage';
 import ShippingPage from './pages/checkout/ShippingPage';
 
 // Product pages
-import WomenProducts from './pages/products/WomenProducts';
-import MenProducts from './pages/products/MenProducts';
-import KidsProducts from './pages/products/KidsProducts';
+import WomenProductsPage from './pages/products/WomenProducts';
+import MenProductsPage from './pages/products/MenProducts';
+import KidsProductsPage from './pages/products/KidsProducts';
 
 // Icon pages
 import WishlistPage from './pages/iconPages/WishlistPage';
@@ -39,9 +39,9 @@ function App() {
             <Route path="/auth/verify" element={<EmailVerificationPage />} />
             <Route path="/auth/welcome" element={<WelcomeMessage />} />
             {/* Product routes */}
-            <Route path="/products/women" element={<WomenProducts />} />
-            <Route path="/products/men" element={<MenProducts />} />
-            <Route path="/products/kids" element={<KidsProducts />} />
+            <Route path="/products/women" element={<WomenProductsPage />} />
+            <Route path="/products/men" element={<MenProductsPage />} />
+            <Route path="/products/kids" element={<KidsProductsPage />} />
             {/* Icon routes */}
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/cart" element={<CartPage />} />

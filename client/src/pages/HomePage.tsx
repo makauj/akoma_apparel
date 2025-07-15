@@ -84,7 +84,7 @@ const KidsCategories = [
 const categoryGroups = [
   { title: "Women", items:WomenCategories },
   { title: "Men", items:MenCategories },
-  { title: "WomKidsen", items:KidsCategories },
+  { title: "Kids", items:KidsCategories },
 ]
 function categories() {
       return (

@@ -1,6 +1,7 @@
 import express from 'express';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { protect, adminOnly } from '../middleware/authMiddleware';
+import { uploadMiddleware } from '../middleware/uploadMiddleware';
 import { AuthenticatedRequest } from '../types/express';
 import {
   getProducts,
@@ -27,7 +28,7 @@ const authHandler = (
 
 router.get('/', getProducts);
 router.get('/:id', getProductById);
-router.post('/', protect, authHandler(adminOnly), createProduct);
+router.post('/', protect, uploadMiddleware, authHandler(adminOnly), createProduct);
 router.delete('/:id', protect, authHandler(adminOnly), deleteProduct);
 router.put('/:id', protect, authHandler(adminOnly), updateProduct);
 router.get('/category/:category', getProductsByCategory);
